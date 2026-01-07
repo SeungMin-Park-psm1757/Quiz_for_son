@@ -10,35 +10,44 @@ import {
 
 const CategorySelectScreen = ({ navigation }) => {
   const categories = [
-    { name: "물고기 친구들 🐠", key: "fish_marine", color: "#4682B4" }, // SteelBlue
-    { name: "동물 친구들 🦁", key: "animals", color: "#FFD700" }, // Gold
-    { name: "공룡의 세계 🦖", key: "dinosaurs", color: "#228B22" }, // ForestGreen
-    { name: "꿈틀꿈틀 곤충 🦋", key: "insects", color: "#BA55D3" }, // MediumOrchid
+    { name: "물고기 친구들 🐠", key: "fish_marine", color: "#4682B4" },
+    { name: "동물 친구들 🦁", key: "animals", color: "#FFD700" },
+    { name: "공룡의 세계 🦖", key: "dinosaurs", color: "#228B22" },
+    { name: "꿈틀꿈틀 곤충 🦋", key: "insects", color: "#BA55D3" },
   ];
 
   return (
     <ImageBackground
-      source={require("../assets/images/background.png")} // Re-using the background image
+      source={require("../assets/images/background.png")}
       style={styles.backgroundImage}
+      resizeMode="cover"
     >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.title}>카테고리 선택</Text>
-          <Text style={styles.subtitle}>Jung-woo, choose your adventure!</Text>
+      <View style={styles.overlay}>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.content}>
+            <View style={styles.header}>
+              <Text style={styles.title}>카테고리 선택</Text>
+              <Text style={styles.subtitle}>어떤 모험을 시작할까요?</Text>
+            </View>
 
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.key}
-              style={[styles.categoryButton, { backgroundColor: category.color }]}
-              onPress={() =>
-                navigation.navigate("Quiz", { category: category.key })
-              }
-            >
-              <Text style={styles.categoryButtonText}>{category.name}</Text>
+            <View style={styles.buttonList}>
+              {categories.map((category) => (
+                <TouchableOpacity
+                  key={category.key}
+                  style={[styles.categoryButton, { backgroundColor: category.color }]}
+                  onPress={() => navigation.navigate("Quiz", { category: category.key })}
+                >
+                  <Text style={styles.categoryButtonText}>{category.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backLink}>
+              <Text style={styles.backLinkText}>돌아가기</Text>
             </TouchableOpacity>
-          ))}
-        </View>
-      </SafeAreaView>
+          </View>
+        </SafeAreaView>
+      </View>
     </ImageBackground>
   );
 };
@@ -46,53 +55,70 @@ const CategorySelectScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(255, 255, 255, 0.85)", // Light overlay for readability
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.7)", // Semi-transparent overlay
   },
   content: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
     alignItems: "center",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 40,
   },
   title: {
-    fontSize: 40,
+    fontSize: 36,
     fontWeight: "bold",
-    color: "#FF6347", // Tomato
-    marginBottom: 10,
-    textShadowColor: "rgba(0, 0, 0, 0.3)",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
+    color: "#FF6347",
+    marginBottom: 5,
   },
   subtitle: {
-    fontSize: 20,
-    color: "#4682B4", // SteelBlue
-    marginBottom: 40,
+    fontSize: 18,
+    color: "#666",
     fontStyle: "italic",
   },
-  categoryButton: {
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-    marginVertical: 10,
-    width: "80%", // Make buttons wider
+  buttonList: {
+    width: "100%",
+    maxWidth: 400,
     alignItems: "center",
+  },
+  categoryButton: {
+    paddingVertical: 18,
+    width: "100%",
+    borderRadius: 20,
+    marginVertical: 8,
+    alignItems: "center",
+    paddingHorizontal: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 6,
+    elevation: 4,
   },
   categoryButtonText: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
     color: "#FFFFFF",
-    textShadowColor: "rgba(0, 0, 0, 0.2)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
+    textAlign: "center",
+    flexShrink: 1, // Prevent wrapping if possible
+  },
+  backLink: {
+    marginTop: 30,
+    padding: 10,
+  },
+  backLinkText: {
+    fontSize: 16,
+    color: "#666",
+    textDecorationLine: "underline",
   },
 });
 
