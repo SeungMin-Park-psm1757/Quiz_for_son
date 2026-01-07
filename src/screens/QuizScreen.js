@@ -23,9 +23,11 @@ const QuizScreen = ({ navigation }) => {
   // Category-specific themes
   const categoryThemes = {
     animals: { backgroundColor: "#FFF9E6", accentColor: "#FFD700" }, // Light yellow, Gold
-    science: { backgroundColor: "#E6FFEA", accentColor: "#32CD32" }, // Light green, Lime
-    fairyTale: { backgroundColor: "#E6F7FF", accentColor: "#87CEEB" }, // Light blue, SkyBlue
+    science: { backgroundColor: "#E6FFEA", accentColor: "#32CD32" },
+    fairyTale: { backgroundColor: "#E6F7FF", accentColor: "#87CEEB" },
     fish_marine: { backgroundColor: "#E6F2FF", accentColor: "#4682B4" }, // Powder blue, SteelBlue
+    dinosaurs: { backgroundColor: "#E9F5E9", accentColor: "#228B22" }, // Light green, ForestGreen
+    insects: { backgroundColor: "#F3E5F5", accentColor: "#BA55D3" }, // Light purple, Orchid
   };
 
   const theme = categoryThemes[category] || { backgroundColor: "#FFFFFF", accentColor: "#FF6347" };

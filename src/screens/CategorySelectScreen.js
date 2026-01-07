@@ -10,9 +10,10 @@ import {
 
 const CategorySelectScreen = ({ navigation }) => {
   const categories = [
-    { name: "동물 친구들", key: "animals", color: "#FFD700" }, // Gold
-    { name: "신기한 과학", key: "science", color: "#32CD32" }, // LimeGreen
-    { name: "동화 속 이야기", key: "fairyTale", color: "#87CEEB" }, // SkyBlue
+    { name: "물고기 친구들 🐠", key: "fish_marine", color: "#4682B4" }, // SteelBlue
+    { name: "동물 친구들 🦁", key: "animals", color: "#FFD700" }, // Gold
+    { name: "공룡의 세계 🦖", key: "dinosaurs", color: "#228B22" }, // ForestGreen
+    { name: "꿈틀꿈틀 곤충 🦋", key: "insects", color: "#BA55D3" }, // MediumOrchid
   ];
 
   return (

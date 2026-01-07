@@ -229,6 +229,58 @@ const quizQuestions = [
     question: "귀가 길게 쭉 올라와 있고, 앞니가 길며, 당근과 풀을 좋아하는 동물은 무엇일까요?",
     answer: "토끼",
   },
+  // Insects Quiz
+  {
+    id: "insects001", category: "insects", difficulty: "easy",
+    question: "날개가 아주 화려하고 예쁘며, 애벌레에서 번데기를 거쳐 하늘을 날아다니는 곤충은 무엇일까요?",
+    answer: "나비",
+  },
+  {
+    id: "insects002", category: "insects", difficulty: "easy",
+    question: "줄을 지어 먹이를 옮기고, 땅속에 집을 짓고 사는 아주 부지런한 곤충은 무엇일까요?",
+    answer: "개미",
+  },
+  {
+    id: "insects003", category: "insects", difficulty: "easy",
+    question: "빨간색 몸에 검은색 점무늬가 있고, 진딧물을 잡아먹는 고마운 곤충은 무엇일까요?",
+    answer: "무당벌레",
+  },
+  {
+    id: "insects004", category: "insects", difficulty: "easy",
+    question: "커다란 눈과 네 개의 투명한 날개를 가졌으며, 헬리콥터처럼 공중에 멈춰 있을 수 있는 곤충은 무엇일까요?",
+    answer: "잠자리",
+  },
+  {
+    id: "insects005", category: "insects", difficulty: "easy",
+    question: "더운 여름날 나무에 붙어 '맴맴' 소리를 내며 우는 곤충은 무엇일까요?",
+    answer: "매미",
+  },
+  // Dinosaurs Quiz
+  {
+    id: "dinosaurs001", category: "dinosaurs", difficulty: "easy",
+    question: "가장 무서운 육식 공룡이며, 날카로운 이빨과 강력한 턱을 가진 '폭군 도마뱀'은 누구일까요?",
+    answer: "티라노사우루스",
+  },
+  {
+    id: "dinosaurs002", category: "dinosaurs", difficulty: "easy",
+    question: "코와 눈 위에 세 개의 뿔이 있고, 얼굴 주위에 넓은 방패 모양의 프릴이 있는 초식 공룡은 누구일까요?",
+    answer: "트리케라톱스",
+  },
+  {
+    id: "dinosaurs003", category: "dinosaurs", difficulty: "easy",
+    question: "목과 꼬리가 아주 길어서 높은 나무의 잎을 먹을 수 있었던 커다란 초식 공룡은 누구일까요?",
+    answer: "브라키오사우루스",
+  },
+  {
+    id: "dinosaurs004", category: "dinosaurs", difficulty: "easy",
+    question: "등에 커다란 오각형 판이 줄지어 있고, 꼬리에 뾰족한 가시가 달린 초식 공룡은 누구일까요?",
+    answer: "스테고사우루스",
+  },
+  {
+    id: "dinosaurs005", category: "dinosaurs", difficulty: "medium",
+    question: "몸집은 작지만 아주 빠르고 똑똑하며, 발가락에 갈고리 같은 발톱이 있는 육식 공룡은 누구일까요?",
+    answer: "벨로키랍토르",
+  },
 ];
 
 const processedQuizData = quizQuestions.map(q => {
