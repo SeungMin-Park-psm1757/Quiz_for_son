@@ -11,14 +11,11 @@ import {
 const HomeScreen = ({ navigation }) => {
   return (
     <ImageBackground
-      source={require("../assets/images/background.png")} // Placeholder background image
+      source={require("../assets/images/background.png")}
       style={styles.backgroundImage}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>정우의 탐험 퀴즈</Text>
-          <Text style={styles.subtitle}>Jung-woos Quiz Adventure</Text>
-
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => navigation.navigate("CategorySelect")}
@@ -41,17 +38,18 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+    width: '100%',
+    height: '100%',
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.7)", // Semi-transparent overlay
+    justifyContent: 'flex-end', // Move buttons to the bottom to not cover the character
+    alignItems: 'center',
+    paddingBottom: 80,
   },
   content: {
-    alignItems: "center",
+    alignItems: 'center',
+    width: '100%',
   },
   title: {
     fontSize: 48,
@@ -69,11 +67,10 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   startButton: {
-    backgroundColor: "#FF6347", // Tomato red for a large, inviting button
+    backgroundColor: "#FF6347",
     paddingVertical: 20,
     paddingHorizontal: 50,
     borderRadius: 30,
-    marginTop: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
