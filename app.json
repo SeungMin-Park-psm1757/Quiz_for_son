@@ -24,8 +24,11 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "webpack"
+    },
+    "experiments": {
+      "baseUrl": "/Quiz_for_son"
     }
   }
 }
-
