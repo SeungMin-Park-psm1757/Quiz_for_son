@@ -21,9 +21,16 @@ const HomeScreen = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.startButton}
-            onPress={() => navigation.navigate("CategorySelect")} // Placeholder for navigation
+            onPress={() => navigation.navigate("CategorySelect")}
           >
             <Text style={styles.startButtonText}>탐험 시작!</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.recordsButton}
+            onPress={() => navigation.navigate("Records")}
+          >
+            <Text style={styles.recordsButtonText}>나의 기록 📓</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -80,6 +87,23 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.2)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
+  },
+  recordsButton: {
+    backgroundColor: "#4682B4",
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
+  },
+  recordsButtonText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
 });
 

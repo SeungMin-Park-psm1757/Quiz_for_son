@@ -20,8 +20,19 @@ const QuizScreen = ({ navigation }) => {
   const route = useRoute();
   const { category } = route.params;
 
+  // Category-specific themes
+  const categoryThemes = {
+    animals: { backgroundColor: "#FFF9E6", accentColor: "#FFD700" }, // Light yellow, Gold
+    science: { backgroundColor: "#E6FFEA", accentColor: "#32CD32" }, // Light green, Lime
+    fairyTale: { backgroundColor: "#E6F7FF", accentColor: "#87CEEB" }, // Light blue, SkyBlue
+    fish_marine: { backgroundColor: "#E6F2FF", accentColor: "#4682B4" }, // Powder blue, SteelBlue
+  };
+
+  const theme = categoryThemes[category] || { backgroundColor: "#FFFFFF", accentColor: "#FF6347" };
+
   // For Jung-woo's personalized data
   const userId = "jungwoo_explorer";
+  const TOTAL_QUESTIONS = 10; // Standardize to 10 questions per session
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -29,20 +40,21 @@ const QuizScreen = ({ navigation }) => {
   const [showFireworks, setShowFireworks] = useState(false);
   const [showEncouragingCharacter, setShowEncouragingCharacter] = useState(false);
   const [quizData, setQuizData] = useState([]); // State to hold filtered quiz data
-  const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Track correct answers for current session
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [questionsAnswered, setQuestionsAnswered] = useState(0);
 
   useEffect(() => {
-    // Filter quiz data by category when the component mounts or category changes
     const filteredQuizzes = allQuizData.filter(q => q.category === category);
-    // Shuffle the filtered quizzes to present them randomly
-    setQuizData(filteredQuizzes.sort(() => Math.random() - 0.5));
+    // Grab only 10 random questions
+    const shuffled = filteredQuizzes.sort(() => Math.random() - 0.5).slice(0, TOTAL_QUESTIONS);
+    setQuizData(shuffled);
   }, [category]);
 
   const currentQuestion = quizData[currentQuestionIndex];
 
   const speakQuestion = (text) => {
     Speech.speak(text, {
-      language: "ko-KR", // Korean language
+      language: "ko-KR",
       pitch: 1.2,
       rate: 0.9,
     });
@@ -55,10 +67,7 @@ const QuizScreen = ({ navigation }) => {
   }, [currentQuestionIndex, currentQuestion]);
 
   const saveWrongAnswer = async (quizItem, selectedOption) => {
-    if (!db) {
-      console.warn("Firebase Firestore is not initialized. Cannot save wrong answer.");
-      return;
-    }
+    if (!db) return;
     try {
       await db.collection("wrong_answers").add({
         userId: userId,
@@ -69,31 +78,23 @@ const QuizScreen = ({ navigation }) => {
         correctAnswer: quizItem.options[quizItem.correctAnswerIndex],
         timestamp: new Date().toISOString(),
       });
-      console.log("Wrong answer saved successfully!");
     } catch (error) {
       console.error("Error saving wrong answer: ", error);
     }
   };
 
   const updateUserProgress = async (isCorrect) => {
-    if (!db) {
-      console.warn("Firebase Firestore is not initialized. Cannot update user progress.");
-      return;
-    }
-
+    if (!db) return;
     const userProgressRef = db.collection("user_progress").doc(userId);
-
     try {
       await userProgressRef.set(
         {
           totalCorrectAnswers: db.FieldValue.increment(isCorrect ? 1 : 0),
-          quizzesCompleted: db.FieldValue.increment(1), // Increment for each question answered
+          quizzesCompleted: db.FieldValue.increment(1),
           lastActivity: new Date().toISOString(),
-          // Badges will be handled in Task 9, this is a placeholder for now
         },
-        { merge: true } // Merge to update existing fields without overwriting
+        { merge: true }
       );
-      console.log("User progress updated successfully!");
     } catch (error) {
       console.error("Error updating user progress: ", error);
     }
@@ -101,46 +102,39 @@ const QuizScreen = ({ navigation }) => {
 
   const handleAnswerSelect = (index) => {
     setSelectedAnswer(index);
-    setFeedbackMessage(null); // Clear previous feedback
+    setFeedbackMessage(null);
   };
 
   const handleSubmitAnswer = async () => {
-    if (selectedAnswer === null) {
-      setFeedbackMessage("답을 선택해주세요!");
-      return;
-    }
+    if (selectedAnswer === null) return;
 
-    Speech.stop(); // Stop any ongoing speech
-
+    Speech.stop();
     const isCorrect = selectedAnswer === currentQuestion.correctAnswerIndex;
 
+    setQuestionsAnswered(prev => prev + 1);
     if (isCorrect) {
-      setFeedbackMessage("정답! 박정우 탐험가님, 대단해요!");
+      setFeedbackMessage("정답! 정우 탐험가님, 최고예요! 🌟");
       setShowFireworks(true);
-      setCorrectAnswersCount(prev => prev + 1); // Increment correct answers for current session
-      // TODO: Award badge (Task 9) - This will involve Firebase User_Progress update
+      setCorrectAnswersCount(prev => prev + 1);
     } else {
-      setFeedbackMessage("아쉬워요! 다시 생각해볼까요?");
+      setFeedbackMessage("아쉬워요! 다시 한 번 같이 생각해봐요! 🤗");
       setShowEncouragingCharacter(true);
-      saveWrongAnswer(currentQuestion, currentQuestion.options[selectedAnswer]); // Save wrong answer
+      saveWrongAnswer(currentQuestion, currentQuestion.options[selectedAnswer]);
     }
 
-    // Update user progress for each question answered
     await updateUserProgress(isCorrect);
 
-    // For now, move to next question after a short delay
     setTimeout(() => {
       setSelectedAnswer(null);
       setFeedbackMessage(null);
-      setShowFireworks(false); // Hide fireworks
-      setShowEncouragingCharacter(false); // Hide encouraging character
+      setShowFireworks(false);
+      setShowEncouragingCharacter(false);
       if (currentQuestionIndex < quizData.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        // Navigate to ResultScreen
         navigation.replace("Result", {
           totalQuestions: quizData.length,
-          correctAnswersCount: correctAnswersCount,
+          correctAnswersCount: correctAnswersCount + (isCorrect ? 1 : 0),
           category: category,
         });
       }
@@ -150,32 +144,32 @@ const QuizScreen = ({ navigation }) => {
   if (!currentQuestion || quizData.length === 0) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>퀴즈 데이터를 불러오는 중이거나 해당 카테고리에 문제가 없습니다.</Text>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>뒤로 가기</Text>
-        </TouchableOpacity>
+        <Text style={styles.loadingText}>퀴즈를 준비하고 있어요...</Text>
       </View>
     );
   }
 
   return (
-    <ImageBackground
-      source={require("../assets/images/background.png")}
-      style={styles.backgroundImage}
-    >
+    <View style={[styles.mainContainer, { backgroundColor: theme.backgroundColor }]}>
       <SafeAreaView style={styles.container}>
+        {/* Top Header with Score and Back */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.headerBackButton} onPress={() => navigation.goBack()}>
+            <Text style={styles.headerBackButtonText}>🏠 홈으로</Text>
+          </TouchableOpacity>
+          <View style={styles.scoreContainer}>
+            <Text style={styles.scoreText}>맞춘 문제: {correctAnswersCount} / {TOTAL_QUESTIONS}</Text>
+          </View>
+        </View>
+
         <View style={styles.content}>
-          <Text style={styles.categoryTitle}>{category.toUpperCase()}</Text>
+          <Text style={[styles.categoryTitle, { color: theme.accentColor }]}>{category.toUpperCase()}</Text>
           <View style={styles.questionCard}>
             {currentQuestion.imageUrl && (
-              <Image
-                source={{ uri: currentQuestion.imageUrl }}
-                style={styles.questionImage}
-              />
+              <Image source={{ uri: currentQuestion.imageUrl }} style={styles.questionImage} />
             )}
             <Text style={styles.questionText}>{currentQuestion.question}</Text>
             <TouchableOpacity onPress={() => speakQuestion(currentQuestion.question)} style={styles.speakerButton}>
-              {/* Placeholder for speaker icon */}
               <Text style={styles.speakerIcon}>🔊</Text>
             </TouchableOpacity>
           </View>
@@ -186,7 +180,7 @@ const QuizScreen = ({ navigation }) => {
                 key={index}
                 style={[
                   styles.optionButton,
-                  selectedAnswer === index && styles.selectedOptionButton,
+                  selectedAnswer === index && { borderColor: theme.accentColor, borderWidth: 3, backgroundColor: theme.backgroundColor },
                 ]}
                 onPress={() => handleAnswerSelect(index)}
               >
@@ -196,148 +190,176 @@ const QuizScreen = ({ navigation }) => {
           </View>
 
           {feedbackMessage && (
-            <Text
-              style={[
-                styles.feedbackText,
-                selectedAnswer === currentQuestion.correctAnswerIndex
-                  ? styles.correctFeedback
-                  : styles.incorrectFeedback,
-              ]}
-            >
+            <Text style={[
+              styles.feedbackText,
+              selectedAnswer === currentQuestion.correctAnswerIndex ? styles.correctFeedback : styles.incorrectFeedback
+            ]}>
               {feedbackMessage}
             </Text>
           )}
 
           <TouchableOpacity
-            style={styles.submitButton}
+            style={[styles.submitButton, { backgroundColor: selectedAnswer === null ? "#CCC" : theme.accentColor }]}
             onPress={handleSubmitAnswer}
             disabled={selectedAnswer === null}
           >
-            <Text style={styles.submitButtonText}>답변 제출</Text>
+            <Text style={styles.submitButtonText}>답 정하기!</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
       {showFireworks && <Fireworks isVisible={showFireworks} onAnimationEnd={() => setShowFireworks(false)} />}
       {showEncouragingCharacter && <EncouragingCharacter isVisible={showEncouragingCharacter} onAnimationEnd={() => setShowEncouragingCharacter(false)} />}
-    </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  mainContainer: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
   },
   container: {
     flex: 1,
-    justifyContent: "center",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    paddingHorizontal: 20,
+    paddingTop: 10,
+  },
+  headerBackButton: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#DDD",
+  },
+  headerBackButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  scoreContainer: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#DDD",
+  },
+  scoreText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#FFF",
   },
   loadingText: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  backButton: {
-    backgroundColor: "#FF6347",
-    padding: 10,
-    borderRadius: 10,
-  },
-  backButtonText: {
-    color: "white",
+    fontSize: 20,
     fontWeight: "bold",
+    color: "#666",
   },
   content: {
+    flex: 1,
     alignItems: "center",
-    width: "90%",
-    padding: 20,
-    borderRadius: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    paddingHorizontal: 20,
+    paddingTop: 30,
   },
   categoryTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 28,
+    fontWeight: "900",
     marginBottom: 20,
-    color: "#4682B4",
+    textShadowColor: "rgba(0, 0, 0, 0.1)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   questionCard: {
+    width: "100%",
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 25,
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
   questionImage: {
-    width: 200,
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 10,
+    width: "100%",
+    height: 180,
+    borderRadius: 15,
+    marginBottom: 15,
   },
   questionText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
     color: "#333",
+    lineHeight: 30,
   },
   speakerButton: {
-    marginTop: 10,
-    backgroundColor: "#EEE",
-    padding: 10,
+    marginTop: 15,
+    backgroundColor: "#F0F0F0",
+    padding: 12,
     borderRadius: 50,
   },
   speakerIcon: {
-    fontSize: 24,
+    fontSize: 28,
   },
   optionsContainer: {
     width: "100%",
-    marginBottom: 20,
+    marginBottom: 25,
   },
   optionButton: {
     backgroundColor: "#FFF",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
+    padding: 18,
+    borderRadius: 15,
+    marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#DDD",
+    borderColor: "#EEE",
     alignItems: "center",
-  },
-  selectedOptionButton: {
-    borderColor: "#FF6347",
-    borderWidth: 2,
-    backgroundColor: "#FFF0F0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
   },
   optionButtonText: {
-    fontSize: 16,
-    color: "#333",
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#444",
   },
   feedbackText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 15,
     textAlign: "center",
   },
   correctFeedback: {
-    color: "green",
+    color: "#2ECC71",
   },
   incorrectFeedback: {
-    color: "red",
+    color: "#E74C3C",
   },
   submitButton: {
-    backgroundColor: "#32CD32",
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 30,
+    paddingVertical: 18,
+    paddingHorizontal: 50,
+    borderRadius: 35,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 8,
+    elevation: 5,
   },
   submitButtonText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     color: "white",
   },

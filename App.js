@@ -5,7 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/screens/HomeScreen";
 import CategorySelectScreen from "./src/screens/CategorySelectScreen";
 import QuizScreen from "./src/screens/QuizScreen";
-import ResultScreen from "./src/screens/ResultScreen"; // Import ResultScreen
+import ResultScreen from "./src/screens/ResultScreen";
+import RecordsScreen from "./src/screens/RecordsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,8 +30,13 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Result" // Name for the Result screen
+          name="Result"
           component={ResultScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Records"
+          component={RecordsScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
