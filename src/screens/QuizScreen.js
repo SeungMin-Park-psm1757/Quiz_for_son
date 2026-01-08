@@ -154,7 +154,7 @@ const QuizScreen = ({ navigation }) => {
   return (
     <View style={[styles.mainContainer, { backgroundColor: theme.backgroundColor }]}>
       <ImageBackground
-        source={require("../assets/images/background.png")}
+        source={require("../../assets/images/background.png")}
         style={styles.contentBackground}
         imageStyle={{ opacity: 0.15 }} // Suttle background
       >

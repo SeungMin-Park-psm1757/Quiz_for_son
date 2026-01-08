@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require("../assets/images/background.png")}
+        source={require("../../assets/images/background.png")}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
