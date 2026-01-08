@@ -7,12 +7,13 @@ import {
   SafeAreaView,
   ImageBackground,
 } from "react-native";
+import backgroundImage from "../assets/images/background.png";
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require("../assets/images/background.png")}
+        source={backgroundImage}
         style={styles.backgroundImage}
         resizeMode="cover"
       >

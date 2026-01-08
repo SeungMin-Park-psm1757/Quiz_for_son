@@ -15,6 +15,7 @@ import Fireworks from "../components/Fireworks";
 import EncouragingCharacter from "../components/EncouragingCharacter";
 import { db } from "../config/firebaseConfig"; // Import Firebase db
 import allQuizData from "../data/quizData"; // Import all quiz data
+import backgroundImage from "../assets/images/background.png";
 
 const QuizScreen = ({ navigation }) => {
   const route = useRoute();
@@ -154,7 +155,7 @@ const QuizScreen = ({ navigation }) => {
   return (
     <View style={[styles.mainContainer, { backgroundColor: theme.backgroundColor }]}>
       <ImageBackground
-        source={require("../assets/images/background.png")}
+        source={backgroundImage}
         style={styles.contentBackground}
         imageStyle={{ opacity: 0.15 }} // Suttle background
       >

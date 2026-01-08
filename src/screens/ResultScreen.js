@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { db } from "../config/firebaseConfig";
+import backgroundImage from "../assets/images/background.png";
 
 const ResultScreen = ({ navigation }) => {
   const route = useRoute();
@@ -40,7 +41,7 @@ const ResultScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/images/background.png")}
+      source={backgroundImage}
       style={styles.backgroundImage}
       resizeMode="cover"
     >

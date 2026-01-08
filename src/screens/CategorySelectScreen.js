@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ImageBackground,
 } from "react-native";
+import backgroundImage from "../assets/images/background.png";
 
 const CategorySelectScreen = ({ navigation }) => {
   const categories = [
@@ -18,7 +19,7 @@ const CategorySelectScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/images/background.png")}
+      source={backgroundImage}
       style={styles.backgroundImage}
       resizeMode="cover"
     >
