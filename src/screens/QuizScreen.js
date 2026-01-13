@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
   contentBackground: {
     flex: 1,
     width: "100%",
+    minHeight: "100vh",
   },
   container: {
     flex: 1,
