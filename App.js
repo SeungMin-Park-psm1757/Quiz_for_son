@@ -61,6 +61,8 @@ const styles = StyleSheet.create({
     backgroundColor: Platform.OS === 'web' ? '#f5f5f7' : '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    // Ensure the container spans the full height of the viewport on web
+    minHeight: Platform.OS === 'web' ? '100vh' : 'auto',
   },
   appContainer: {
     flex: 1,
@@ -68,6 +70,8 @@ const styles = StyleSheet.create({
     maxWidth: Platform.OS === 'web' ? 450 : '100%',
     maxHeight: Platform.OS === 'web' ? 850 : '100%',
     alignSelf: 'center',
+    // Fallback centering for some browsers
+    marginHorizontal: Platform.OS === 'web' ? 'auto' : 0,
     backgroundColor: '#fff',
     // Web specific shadow and border
     ...Platform.select({
