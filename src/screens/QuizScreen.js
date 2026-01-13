@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Image,
   Alert,
+  Animated,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Speech from "expo-speech";
@@ -25,14 +26,30 @@ const QuizScreen = ({ navigation }) => {
   const userId = paramUserId || "jungwoo_explorer";
   const TOTAL_QUESTIONS = 10; // Standardize to 10 questions per session
 
+  // Category-specific themes
+  const categoryThemes = {
+    animals: { backgroundColor: "#FFF9E6", accentColor: "#FFD700" },
+    science: { backgroundColor: "#E6FFEA", accentColor: "#32CD32" },
+    fairyTale: { backgroundColor: "#E6F7FF", accentColor: "#87CEEB" },
+    fish_marine: { backgroundColor: "#E6F2FF", accentColor: "#4682B4" },
+    dinosaurs: { backgroundColor: "#E9F5E9", accentColor: "#228B22" },
+    insects: { backgroundColor: "#F3E5F5", accentColor: "#BA55D3" },
+  };
+
+  const theme = categoryThemes[category] || { backgroundColor: "#FFFFFF", accentColor: "#FF6347" };
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState(null);
   const [showFireworks, setShowFireworks] = useState(false);
+  const [fireworksIntensity, setFireworksIntensity] = useState(1);
   const [showEncouragingCharacter, setShowEncouragingCharacter] = useState(false);
   const [quizData, setQuizData] = useState([]); // State to hold filtered quiz data
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
+  const [showResultImage, setShowResultImage] = useState(false);
+
+  const shimmyAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const filteredQuizzes = allQuizData.filter(q => q.category === category);
