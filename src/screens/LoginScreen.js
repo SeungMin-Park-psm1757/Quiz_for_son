@@ -30,8 +30,8 @@ const LoginScreen = ({ navigation }) => {
     return (
         <ImageBackground
             source={backgroundImage}
-            style={styles.background}
-            imageStyle={{ opacity: 0.3 }}
+            style={styles.backgroundImage}
+            imageStyle={{ opacity: 0.3, resizeMode: 'cover' }}
         >
             <SafeAreaView style={styles.container}>
                 <KeyboardAvoidingView
@@ -75,11 +75,9 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    background: {
+    backgroundImage: {
         flex: 1,
         width: '100%',
-        height: '100%',
-        minHeight: '100vh',
     },
     container: {
         flex: 1,
