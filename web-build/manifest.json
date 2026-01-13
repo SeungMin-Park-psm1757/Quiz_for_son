@@ -4,6 +4,6 @@
   "lang": "en",
   "name": "JungwoosQuizAdventure",
   "short_name": "JungwoosQuizAdventure",
-  "start_url": "./?utm_source=web_app_manifest",
+  "start_url": "/?utm_source=web_app_manifest",
   "orientation": "portrait"
 }
