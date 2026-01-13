@@ -58,25 +58,33 @@ export default function App() {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Platform.OS === 'web' ? '#f0f0f0' : '#fff',
+    backgroundColor: Platform.OS === 'web' ? '#f5f5f7' : '#fff',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   appContainer: {
     flex: 1,
-    // Max width for desktop/web view to prevent "too big" look
-    maxWidth: Platform.OS === 'web' ? 500 : '100%',
     width: '100%',
+    maxWidth: Platform.OS === 'web' ? 450 : '100%',
+    maxHeight: Platform.OS === 'web' ? 850 : '100%',
     alignSelf: 'center',
     backgroundColor: '#fff',
-    shadowColor: Platform.OS === 'web' ? "#000" : "transparent",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: Platform.OS === 'web' ? 0.2 : 0,
-    shadowRadius: Platform.OS === 'web' ? 30 : 0,
-    marginVertical: Platform.OS === 'web' ? 20 : 0,
-    borderRadius: Platform.OS === 'web' ? 20 : 0,
+    // Web specific shadow and border
+    ...Platform.select({
+      web: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        borderRadius: 30,
+        marginVertical: 20,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+      },
+      default: {
+        borderRadius: 0,
+      }
+    }),
     overflow: 'hidden',
   },
 });
