@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import backgroundImage from "../assets/images/background.png";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
+  const userId = route.params?.userId || "jungwoo_explorer";
+
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
@@ -21,14 +23,14 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.actionButton, styles.startButton]}
-              onPress={() => navigation.navigate("CategorySelect")}
+              onPress={() => navigation.navigate("CategorySelect", { userId })}
             >
               <Text style={styles.actionButtonText}>탐험 시작! 🚀</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.actionButton, styles.recordsButton]}
-              onPress={() => navigation.navigate("Records")}
+              onPress={() => navigation.navigate("Records", { userId })}
             >
               <Text style={styles.actionButtonText}>나의 기록 📓</Text>
             </TouchableOpacity>

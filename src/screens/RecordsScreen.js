@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { db } from "../config/firebaseConfig";
 
-const RecordsScreen = ({ navigation }) => {
+const RecordsScreen = ({ navigation, route }) => {
     const [records, setRecords] = useState([]);
     const [loading, setLoading] = useState(true);
-    const userId = "jungwoo_explorer";
+    const userId = route.params?.userId || "jungwoo_explorer";
 
     useEffect(() => {
         const fetchRecords = async () => {

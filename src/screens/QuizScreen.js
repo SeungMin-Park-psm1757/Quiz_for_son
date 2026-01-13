@@ -19,22 +19,10 @@ import backgroundImage from "../assets/images/background.png";
 
 const QuizScreen = ({ navigation }) => {
   const route = useRoute();
-  const { category } = route.params;
+  const { category, userId: paramUserId } = route.params;
 
-  // Category-specific themes
-  const categoryThemes = {
-    animals: { backgroundColor: "#FFF9E6", accentColor: "#FFD700" }, // Light yellow, Gold
-    science: { backgroundColor: "#E6FFEA", accentColor: "#32CD32" },
-    fairyTale: { backgroundColor: "#E6F7FF", accentColor: "#87CEEB" },
-    fish_marine: { backgroundColor: "#E6F2FF", accentColor: "#4682B4" }, // Powder blue, SteelBlue
-    dinosaurs: { backgroundColor: "#E9F5E9", accentColor: "#228B22" }, // Light green, ForestGreen
-    insects: { backgroundColor: "#F3E5F5", accentColor: "#BA55D3" }, // Light purple, Orchid
-  };
-
-  const theme = categoryThemes[category] || { backgroundColor: "#FFFFFF", accentColor: "#FF6347" };
-
-  // For Jung-woo's personalized data
-  const userId = "jungwoo_explorer";
+  // Use passed userId or fallback
+  const userId = paramUserId || "jungwoo_explorer";
   const TOTAL_QUESTIONS = 10; // Standardize to 10 questions per session
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -115,10 +103,39 @@ const QuizScreen = ({ navigation }) => {
     const isCorrect = selectedAnswer === currentQuestion.correctAnswerIndex;
 
     setQuestionsAnswered(prev => prev + 1);
+
     if (isCorrect) {
-      setFeedbackMessage("정답! 박정우 탐험가님, 최고예요! 🎉✨");
-      setShowFireworks(true);
+      const newCorrectCount = correctAnswersCount + 1;
       setCorrectAnswersCount(prev => prev + 1);
+
+      // Dynamic Message
+      let message = "정답! 박정우 탐험가님, 최고예요! 🎉✨";
+      if (newCorrectCount >= 10) message = "우와!! 10문제 모두 정답! 전설의 탐험가 탄생! 👑🌟🚀";
+      else if (newCorrectCount >= 8) message = "대단해요! 거의 다 맞췄어요! 🌟🔥";
+      else if (newCorrectCount >= 5) message = "멋져요! 절반이나 넘게 맞췄어요! 👍💎";
+
+      setFeedbackMessage(message);
+
+      // Determine Intensity
+      let intensity = 1;
+      if (newCorrectCount >= 10) intensity = 4;
+      else if (newCorrectCount >= 8) intensity = 3;
+      else if (newCorrectCount >= 5) intensity = 2;
+      else if (newCorrectCount >= 3) intensity = 1.5; // Slight boost
+
+      setFireworksIntensity(intensity);
+      setShowFireworks(true);
+      setShowResultImage(true);
+
+      // Shimmy Animation
+      Animated.sequence([
+        Animated.timing(shimmyAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shimmyAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shimmyAnim, { toValue: -10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shimmyAnim, { toValue: 10, duration: 50, useNativeDriver: true }),
+        Animated.timing(shimmyAnim, { toValue: 0, duration: 50, useNativeDriver: true })
+      ]).start();
+
     } else {
       setFeedbackMessage("아쉬워요! 다시 한 번 생각해볼까요? 🤗");
       setShowEncouragingCharacter(true);
@@ -132,6 +149,8 @@ const QuizScreen = ({ navigation }) => {
       setFeedbackMessage(null);
       setShowFireworks(false);
       setShowEncouragingCharacter(false);
+      setShowResultImage(false);
+
       if (currentQuestionIndex < quizData.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
@@ -141,7 +160,7 @@ const QuizScreen = ({ navigation }) => {
           category: category,
         });
       }
-    }, 2500); // Slightly longer for celebration
+    }, 3000); // Extended time for celebration
   };
 
   if (!currentQuestion || quizData.length === 0) {
@@ -157,79 +176,96 @@ const QuizScreen = ({ navigation }) => {
       <ImageBackground
         source={backgroundImage}
         style={styles.contentBackground}
-        imageStyle={{ opacity: 0.15 }} // Suttle background
+        imageStyle={{ opacity: 0.15 }}
       >
         <SafeAreaView style={styles.container}>
-          {/* Top Header with Score and Back */}
-          <View style={styles.header}>
-            <TouchableOpacity style={styles.headerBackButton} onPress={() => navigation.goBack()}>
-              <Text style={styles.headerBackButtonText}>🏠 홈으로</Text>
-            </TouchableOpacity>
-            <View style={styles.scoreContainer}>
-              <Text style={styles.scoreText}>맞춘 문제: {correctAnswersCount} / {TOTAL_QUESTIONS}</Text>
-            </View>
-          </View>
-
-          <View style={styles.content}>
-            <Text style={[styles.categoryTitle, { color: theme.accentColor }]}>
-              {category === "fish_marine" ? "물고기 친구들" :
-                category === "animals" ? "동물 친구들" :
-                  category === "dinosaurs" ? "공룡의 세계" :
-                    category === "insects" ? "꿈틀꿈틀 곤충" : category.toUpperCase()}
-            </Text>
-
-            <View style={styles.questionCard}>
-              {currentQuestion.imageUrl && (
-                <Image source={{ uri: currentQuestion.imageUrl }} style={styles.questionImage} />
-              )}
-              <Text style={styles.questionText}>{currentQuestion.question}</Text>
-              <TouchableOpacity onPress={() => speakQuestion(currentQuestion.question)} style={styles.speakerButton}>
-                <Text style={styles.speakerIcon}>🔊</Text>
+          <View style={styles.maxWidthWrapper}>
+            {/* Top Header with Score and Back */}
+            <View style={styles.header}>
+              <TouchableOpacity style={styles.headerBackButton} onPress={() => navigation.goBack()}>
+                <Text style={styles.headerBackButtonText}>🏠 홈으로</Text>
               </TouchableOpacity>
-            </View>
-
-            <View style={styles.optionsContainer}>
-              {currentQuestion.options.map((option, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.optionButton,
-                    selectedAnswer === index && { borderColor: theme.accentColor, borderWidth: 3, backgroundColor: "#FFF" },
-                  ]}
-                  onPress={() => handleAnswerSelect(index)}
-                >
-                  <Text style={styles.optionButtonText}>{option}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            {feedbackMessage && (
-              <View style={styles.feedbackOverlay}>
-                <Text style={[
-                  styles.feedbackText,
-                  selectedAnswer === currentQuestion.correctAnswerIndex ? styles.correctFeedback : styles.incorrectFeedback
-                ]}>
-                  {feedbackMessage}
-                </Text>
-                {selectedAnswer === currentQuestion.correctAnswerIndex && (
-                  <Text style={styles.celebrationEmoji}>🏆🌟👑</Text>
-                )}
+              <View style={styles.scoreContainer}>
+                <Text style={styles.scoreText}>맞춘 문제: {correctAnswersCount} / {TOTAL_QUESTIONS}</Text>
               </View>
-            )}
+            </View>
 
-            {!feedbackMessage && (
-              <TouchableOpacity
-                style={[styles.submitButton, { backgroundColor: selectedAnswer === null ? "#CCC" : theme.accentColor }]}
-                onPress={handleSubmitAnswer}
-                disabled={selectedAnswer === null}
-              >
-                <Text style={styles.submitButtonText}>답 정하기! ✨</Text>
-              </TouchableOpacity>
-            )}
+            <Animated.View style={[styles.content, { transform: [{ translateX: shimmyAnim }] }]}>
+              <Text style={[styles.categoryTitle, { color: theme.accentColor }]}>
+                {category === "fish_marine" ? "물고기 친구들" :
+                  category === "animals" ? "동물 친구들" :
+                    category === "dinosaurs" ? "공룡의 세계" :
+                      category === "insects" ? "꿈틀꿈틀 곤충" : category.toUpperCase()}
+              </Text>
+
+              {/* Question Image (Only if part of question and NOT showing result image yet to avoid clutter? Or keep it?) */}
+              {/* Keeping question image as is */}
+              <View style={styles.questionCard}>
+                {/* 
+                   If the question has an image, we show it. 
+                   If the USER wants a result image separately, we can show it below. 
+                   For now, reusing imageUrl if present. 
+                */}
+                {currentQuestion.imageUrl && (
+                  <Image source={{ uri: currentQuestion.imageUrl }} style={styles.questionImage} />
+                )}
+                <Text style={styles.questionText}>{currentQuestion.question}</Text>
+                <TouchableOpacity onPress={() => speakQuestion(currentQuestion.question)} style={styles.speakerButton}>
+                  <Text style={styles.speakerIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.optionsContainer}>
+                {currentQuestion.options.map((option, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.optionButton,
+                      selectedAnswer === index && { borderColor: theme.accentColor, borderWidth: 3, backgroundColor: "#FFF" },
+                    ]}
+                    onPress={() => handleAnswerSelect(index)}
+                  >
+                    <Text style={styles.optionButtonText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              {feedbackMessage && (
+                <View style={styles.feedbackOverlay}>
+                  <Text style={[
+                    styles.feedbackText,
+                    selectedAnswer === currentQuestion.correctAnswerIndex ? styles.correctFeedback : styles.incorrectFeedback
+                  ]}>
+                    {feedbackMessage}
+                  </Text>
+                  {selectedAnswer === currentQuestion.correctAnswerIndex && (
+                    <>
+                      <Text style={styles.celebrationEmoji}>🏆🌟👑</Text>
+                      {/* Result Image Section */}
+                      {showResultImage && currentQuestion.imageUrl && (
+                        <View style={styles.resultImageContainer}>
+                          <Image source={{ uri: currentQuestion.imageUrl }} style={styles.resultImage} />
+                        </View>
+                      )}
+                    </>
+                  )}
+                </View>
+              )}
+
+              {!feedbackMessage && (
+                <TouchableOpacity
+                  style={[styles.submitButton, { backgroundColor: selectedAnswer === null ? "#CCC" : theme.accentColor }]}
+                  onPress={handleSubmitAnswer}
+                  disabled={selectedAnswer === null}
+                >
+                  <Text style={styles.submitButtonText}>답 정하기! ✨</Text>
+                </TouchableOpacity>
+              )}
+            </Animated.View>
           </View>
         </SafeAreaView>
       </ImageBackground>
-      {showFireworks && <Fireworks isVisible={showFireworks} onAnimationEnd={() => setShowFireworks(false)} />}
+      {showFireworks && <Fireworks isVisible={showFireworks} intensity={fireworksIntensity} onAnimationEnd={() => setShowFireworks(false)} />}
       {showEncouragingCharacter && <EncouragingCharacter isVisible={showEncouragingCharacter} onAnimationEnd={() => setShowEncouragingCharacter(false)} />}
     </View>
   );
@@ -296,6 +332,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 15,
     paddingTop: 20,
+    width: '100%', // Ensure it takes full width of wrapper
+  },
+  maxWidthWrapper: {
+    flex: 1,
+    width: '100%',
+    maxWidth: 600, // Limit width on large screens
+    alignSelf: 'center',
+  },
+  resultImageContainer: {
+    marginTop: 20,
+    padding: 5,
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  resultImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+    resizeMode: 'contain',
   },
   categoryTitle: {
     fontSize: 24,

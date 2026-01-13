@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import backgroundImage from "../assets/images/background.png";
 
-const CategorySelectScreen = ({ navigation }) => {
+const CategorySelectScreen = ({ navigation, route }) => {
+  const userId = route.params?.userId || "jungwoo_explorer";
   const categories = [
     { name: "물고기 친구들 🐠", key: "fish_marine", color: "#4682B4" },
     { name: "동물 친구들 🦁", key: "animals", color: "#FFD700" },
@@ -36,7 +37,7 @@ const CategorySelectScreen = ({ navigation }) => {
                 <TouchableOpacity
                   key={category.key}
                   style={[styles.categoryButton, { backgroundColor: category.color }]}
-                  onPress={() => navigation.navigate("Quiz", { category: category.key })}
+                  onPress={() => navigation.navigate("Quiz", { category: category.key, userId })}
                 >
                   <Text style={styles.categoryButtonText}>{category.name}</Text>
                 </TouchableOpacity>
