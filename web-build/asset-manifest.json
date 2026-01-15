@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/Quiz_for_son/static/js/main.00c38a6e.js",
+    "main.js": "/Quiz_for_son/static/js/main.cbdf0257.js",
     "static/js/118.701a2fc4.js": "/Quiz_for_son/static/js/118.701a2fc4.js",
     "static/media/background.png": "/Quiz_for_son/static/media/background.23d96c986e4d32c26702.png",
     "favicon.ico": "/Quiz_for_son/favicon.ico",
@@ -9,11 +9,11 @@
     "favicon-16.png": "/Quiz_for_son/favicon-16.png",
     "manifest.json": "/Quiz_for_son/manifest.json",
     "serve.json": "/Quiz_for_son/serve.json",
-    "main.00c38a6e.js.map": "/Quiz_for_son/static/js/main.00c38a6e.js.map",
+    "main.cbdf0257.js.map": "/Quiz_for_son/static/js/main.cbdf0257.js.map",
     "118.701a2fc4.js.map": "/Quiz_for_son/static/js/118.701a2fc4.js.map"
   },
   "entrypoints": [
     "static/js/118.701a2fc4.js",
-    "static/js/main.00c38a6e.js"
+    "static/js/main.cbdf0257.js"
   ]
 }
