@@ -57,9 +57,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 60,
     paddingHorizontal: 20,
   },
   actionButton: {
