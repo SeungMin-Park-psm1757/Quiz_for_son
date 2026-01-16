@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
-import backgroundImage from '../assets/images/background.png'; // Make sure this path is correct
+import backgroundImage from "../../assets/images/background.png"; // Make sure this path is correct
 
 const LoginScreen = ({ navigation }) => {
     const [id, setId] = useState('');
@@ -28,56 +28,68 @@ const LoginScreen = ({ navigation }) => {
     };
 
     return (
-        <ImageBackground
-            source={backgroundImage}
-            style={styles.backgroundImage}
-            imageStyle={{ opacity: 0.3, resizeMode: 'cover' }}
-        >
-            <SafeAreaView style={styles.container}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={styles.innerContainer}
-                >
-                    <View style={styles.card}>
-                        <Text style={styles.title}>퀴즈 탐험대 🚀</Text>
-                        <Text style={styles.subtitle}>로그인하고 모험을 떠나요!</Text>
+        <View style={styles.mainContainer}>
+            <ImageBackground
+                source={backgroundImage}
+                style={styles.backgroundImage}
+                resizeMode="cover"
+                imageStyle={{ opacity: 0.5 }}
+            >
+                <SafeAreaView style={styles.container}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        style={styles.innerContainer}
+                    >
+                        <View style={styles.card}>
+                            <Text style={styles.title}>퀴즈 탐험대 🚀</Text>
+                            <Text style={styles.subtitle}>로그인하고 모험을 떠나요!</Text>
 
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.label}>아이디</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="아이디를 입력하세요"
-                                value={id}
-                                onChangeText={setId}
-                                autoCapitalize="none"
-                            />
+                            <View style={styles.inputContainer}>
+                                <Text style={styles.label}>아이디</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="아이디를 입력하세요"
+                                    value={id}
+                                    onChangeText={setId}
+                                    autoCapitalize="none"
+                                    onSubmitEditing={handleLogin} // Enable Enter key
+                                    returnKeyType="done"
+                                />
+                            </View>
+
+                            <View style={styles.inputContainer}>
+                                <Text style={styles.label}>비밀번호</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="비밀번호를 입력하세요"
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    secureTextEntry
+                                    onSubmitEditing={handleLogin}
+                                    returnKeyType="go"
+                                />
+                            </View>
+
+                            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                                <Text style={styles.buttonText}>로그인</Text>
+                            </TouchableOpacity>
                         </View>
-
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.label}>비밀번호</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="비밀번호를 입력하세요"
-                                value={password}
-                                onChangeText={setPassword}
-                                secureTextEntry
-                            />
-                        </View>
-
-                        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                            <Text style={styles.buttonText}>로그인</Text>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
-            </SafeAreaView>
-        </ImageBackground>
+                    </KeyboardAvoidingView>
+                </SafeAreaView>
+            </ImageBackground>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#E8F4D9',
+    },
     backgroundImage: {
         flex: 1,
         width: '100%',
+        height: '100%',
     },
     container: {
         flex: 1,

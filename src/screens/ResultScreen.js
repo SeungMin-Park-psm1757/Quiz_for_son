@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { db } from "../config/firebaseConfig";
-import backgroundImage from "../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.png";
 
 const ResultScreen = ({ navigation }) => {
   const route = useRoute();
@@ -64,30 +64,27 @@ const ResultScreen = ({ navigation }) => {
               </View>
 
               <Text style={styles.congratsText}>
-                {percentage === 100 ? "완벽해요! 당신은 퀴즈 왕! 👑" :
-                  percentage > 70 ? "정말 잘했어요! 훌륭해요! ✨" :
-                    "조금 더 노력하면 할 수 있어요! 화이팅! 💪"}
+                {correctAnswersCount === 10 ? "우와, 전설의 탐험가예요! 🏆👑" :
+                  correctAnswersCount >= 3 ? `${correctAnswersCount}문제 맞혔어요! 대단해요! 🌟` :
+                    `${correctAnswersCount}개 맞혔어요! 조금 아쉽지만 노력하면 더 잘할 수 있어요! 💪`}
               </Text>
             </View>
 
-            <View style={styles.progressCard}>
-              <Text style={styles.progressTitle}>박정우 탐험가님의 성장 기록</Text>
-              <View style={styles.progressRow}>
-                <Text style={styles.progressLabel}>총 맞춘 문제:</Text>
-                <Text style={styles.progressValue}>{userTotalCorrect}개</Text>
-              </View>
-              <View style={styles.progressRow}>
-                <Text style={styles.progressLabel}>총 완료한 퀴즈:</Text>
-                <Text style={styles.progressValue}>{userQuizzesCompleted}개</Text>
-              </View>
-            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.retryButton]}
+                onPress={() => navigation.replace("Quiz", { category, userId })}
+              >
+                <Text style={styles.actionButtonText}>🔄 다시 도전하기</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.homeButton}
-              onPress={() => navigation.popToTop()}
-            >
-              <Text style={styles.homeButtonText}>🏠 홈으로 돌아가기</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.homeButton]}
+                onPress={() => navigation.popToTop()}
+              >
+                <Text style={styles.actionButtonText}>🏠 홈으로 가기</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </SafeAreaView>
       </View>
@@ -100,7 +97,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    minHeight: "100vh",
   },
   overlay: {
     flex: 1,
@@ -195,21 +191,34 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
   },
-  homeButton: {
-    backgroundColor: "#FF6347",
+  buttonContainer: {
+    width: "100%",
+    maxWidth: 400,
+    marginTop: 20,
+    gap: 15,
+  },
+  actionButton: {
+    width: "100%",
     paddingVertical: 18,
-    paddingHorizontal: 50,
-    borderRadius: 30,
+    borderRadius: 25,
+    alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 8,
+    elevation: 5,
   },
-  homeButtonText: {
-    fontSize: 22,
+  retryButton: {
+    backgroundColor: "#FFD700", // Gold
+    marginBottom: 10,
+  },
+  homeButton: {
+    backgroundColor: "#4682B4", // SteelBlue
+  },
+  actionButtonText: {
+    fontSize: 20,
     fontWeight: "bold",
-    color: "white",
+    color: "#333", // Default dark for visibility on light/gold buttons
   },
 });
 

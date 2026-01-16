@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ImageBackground,
 } from "react-native";
-import backgroundImage from "../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.png";
 
 const CategorySelectScreen = ({ navigation, route }) => {
   const userId = route.params?.userId || "jungwoo_explorer";
@@ -19,75 +19,94 @@ const CategorySelectScreen = ({ navigation, route }) => {
   ];
 
   return (
-    <ImageBackground
-      source={backgroundImage}
-      style={styles.backgroundImage}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.content}>
+    <View style={styles.mainContainer}>
+      <ImageBackground
+        source={backgroundImage}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+        imageStyle={{ opacity: 1 }}
+      >
+        <View style={styles.overlay}>
+          <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-              <Text style={styles.title}>카테고리 선택</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton}>
+                <Text style={styles.backButtonText}>🏠 홈으로</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.content}>
+              <Text style={styles.title}>어떤 퀴즈를 풀어볼까?</Text>
               <Text style={styles.subtitle}>어떤 모험을 시작할까요?</Text>
-            </View>
 
-            <View style={styles.buttonList}>
-              {categories.map((category) => (
-                <TouchableOpacity
-                  key={category.key}
-                  style={[styles.categoryButton, { backgroundColor: category.color }]}
-                  onPress={() => navigation.navigate("Quiz", { category: category.key, userId })}
-                >
-                  <Text style={styles.categoryButtonText}>{category.name}</Text>
-                </TouchableOpacity>
-              ))}
+              <View style={styles.buttonList}>
+                {categories.map((category) => (
+                  <TouchableOpacity
+                    key={category.key}
+                    style={[styles.categoryButton, { backgroundColor: category.color }]}
+                    onPress={() => navigation.navigate("Quiz", { category: category.key, userId })}
+                  >
+                    <Text style={styles.categoryButtonText}>{category.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backLink}>
-              <Text style={styles.backLinkText}>돌아가기</Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-      </View>
-    </ImageBackground>
+          </SafeAreaView>
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#E8F4D9', // Match background
+  },
   backgroundImage: {
     flex: 1,
     width: "100%",
     height: "100%",
-    minHeight: "100vh",
   },
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.85)", // Light overlay for readability
+    backgroundColor: "rgba(255, 255, 255, 0.4)", // Reduced opacity since background is cleaner now
   },
   container: {
     flex: 1,
   },
+  header: {
+    padding: 20,
+    paddingTop: 50,
+  },
+  backButton: {
+    backgroundColor: "rgba(255,255,255,0.9)",
+    padding: 10,
+    borderRadius: 20,
+    alignSelf: "flex-start",
+  },
+  backButtonText: {
+    fontWeight: "bold",
+    color: "#333",
+  },
   content: {
     flex: 1,
-    padding: 20,
-    justifyContent: "center",
     alignItems: "center",
-  },
-  header: {
-    alignItems: "center",
-    marginBottom: 40,
+    justifyContent: "flex-start", // Fix low-bias by starting from top
+    paddingTop: 40, // Add top spacing
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 36,
     fontWeight: "bold",
     color: "#FF6347",
     marginBottom: 5,
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
     color: "#666",
     fontStyle: "italic",
+    marginBottom: 30,
   },
   buttonList: {
     width: "100%",
@@ -112,18 +131,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFFFFF",
     textAlign: "center",
-    flexShrink: 1, // Prevent wrapping if possible
-  },
-  backLink: {
-    marginTop: 30,
-    padding: 10,
-  },
-  backLinkText: {
-    fontSize: 16,
-    color: "#666",
-    textDecorationLine: "underline",
+    flexShrink: 1,
   },
 });
 
 export default CategorySelectScreen;
-

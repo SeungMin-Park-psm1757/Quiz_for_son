@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ImageBackground,
 } from "react-native";
-import backgroundImage from "../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.png";
 
 const HomeScreen = ({ navigation, route }) => {
   const userId = route.params?.userId || "jungwoo_explorer";
@@ -20,6 +20,10 @@ const HomeScreen = ({ navigation, route }) => {
         resizeMode="cover"
       >
         <SafeAreaView style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>정우의</Text>
+            <Text style={[styles.mainTitle, styles.subTitle]}>퀴즈 모험</Text>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.actionButton, styles.startButton]}
@@ -44,22 +48,40 @@ const HomeScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#E8F4D9", // Match the background image's dominant green color
   },
   backgroundImage: {
     flex: 1,
     width: "100%",
     height: "100%",
-    minHeight: "100vh",
   },
   container: {
     flex: 1,
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end", // Push buttons to bottom
     alignItems: "center",
     paddingHorizontal: 20,
+    paddingBottom: 50, // Add space at bottom
+  },
+  titleContainer: {
+    marginTop: 50,
+    alignItems: 'center',
+  },
+  mainTitle: {
+    fontSize: 50,
+    fontWeight: '900',
+    color: '#FF6347',
+    textShadowColor: 'white',
+    textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 0,
+    letterSpacing: -2,
+  },
+  subTitle: {
+    fontSize: 60,
+    color: '#FFD700',
+    marginTop: -10,
   },
   actionButton: {
     width: "100%",

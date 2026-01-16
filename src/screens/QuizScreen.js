@@ -16,7 +16,8 @@ import Fireworks from "../components/Fireworks";
 import EncouragingCharacter from "../components/EncouragingCharacter";
 import { db } from "../config/firebaseConfig"; // Import Firebase db
 import allQuizData from "../data/quizData"; // Import all quiz data
-import backgroundImage from "../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.png";
+import { saveQuizHistory } from "../services/historyService";
 
 const QuizScreen = ({ navigation }) => {
   const route = useRoute();
@@ -48,6 +49,7 @@ const QuizScreen = ({ navigation }) => {
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [showResultImage, setShowResultImage] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false); // Lock to prevent multiple submissions
 
   const shimmyAnim = useRef(new Animated.Value(0)).current;
 
@@ -114,7 +116,8 @@ const QuizScreen = ({ navigation }) => {
   };
 
   const handleSubmitAnswer = async () => {
-    if (selectedAnswer === null) return;
+    if (selectedAnswer === null || isProcessing) return;
+    setIsProcessing(true); // Lock interactions
 
     Speech.stop();
     const isCorrect = selectedAnswer === currentQuestion.correctAnswerIndex;
@@ -161,7 +164,7 @@ const QuizScreen = ({ navigation }) => {
 
     await updateUserProgress(isCorrect);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setSelectedAnswer(null);
       setFeedbackMessage(null);
       setShowFireworks(false);
@@ -171,13 +174,31 @@ const QuizScreen = ({ navigation }) => {
       if (currentQuestionIndex < quizData.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
+        // Save history before navigating
+        await saveQuizHistory(userId, category, correctAnswersCount + (isCorrect ? 1 : 0), quizData.length);
+
         navigation.replace("Result", {
           totalQuestions: quizData.length,
           correctAnswersCount: correctAnswersCount + (isCorrect ? 1 : 0),
           category: category,
         });
       }
-    }, 3000); // Extended time for celebration
+      setIsProcessing(false); // Unlock interactions
+    }, 1500); // Reduced delay for faster flow
+  };
+
+  const handleQuit = () => {
+    // Fire and forget history save to prevent blocking navigation
+    saveQuizHistory(
+      userId,
+      category,
+      correctAnswersCount,
+      questionsAnswered,
+      'cancelled'
+    ).catch(err => console.error("History save failed:", err));
+
+    // Navigate immediately
+    navigation.navigate("CategorySelect", { userId });
   };
 
   if (!currentQuestion || quizData.length === 0) {
@@ -199,15 +220,21 @@ const QuizScreen = ({ navigation }) => {
           <View style={styles.maxWidthWrapper}>
             {/* Top Header with Score and Back */}
             <View style={styles.header}>
-              <TouchableOpacity style={styles.headerBackButton} onPress={() => navigation.goBack()}>
-                <Text style={styles.headerBackButtonText}>🏠 홈으로</Text>
+              <TouchableOpacity
+                style={styles.headerBackButton}
+                onPress={handleQuit}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+              >
+                <Text style={styles.headerBackButtonText}>🏃 그만하기</Text>
               </TouchableOpacity>
               <View style={styles.scoreContainer}>
-                <Text style={styles.scoreText}>맞춘 문제: {correctAnswersCount} / {TOTAL_QUESTIONS}</Text>
+                <Text style={styles.scoreText}>
+                  {Math.round(((currentQuestionIndex + 1) / TOTAL_QUESTIONS) * 100)}% | 정답: {correctAnswersCount}
+                </Text>
               </View>
             </View>
 
-            <Animated.View style={[styles.content, { transform: [{ translateX: shimmyAnim }] }]}>
+            <View style={styles.content}>
               <Text style={[styles.categoryTitle, { color: theme.accentColor }]}>
                 {category === "fish_marine" ? "물고기 친구들" :
                   category === "animals" ? "동물 친구들" :
@@ -248,7 +275,7 @@ const QuizScreen = ({ navigation }) => {
               </View>
 
               {feedbackMessage && (
-                <View style={styles.feedbackOverlay}>
+                <Animated.View style={[styles.feedbackOverlay, { transform: [{ translateX: shimmyAnim }] }]}>
                   <Text style={[
                     styles.feedbackText,
                     selectedAnswer === currentQuestion.correctAnswerIndex ? styles.correctFeedback : styles.incorrectFeedback
@@ -256,17 +283,9 @@ const QuizScreen = ({ navigation }) => {
                     {feedbackMessage}
                   </Text>
                   {selectedAnswer === currentQuestion.correctAnswerIndex && (
-                    <>
-                      <Text style={styles.celebrationEmoji}>🏆🌟👑</Text>
-                      {/* Result Image Section */}
-                      {showResultImage && currentQuestion.imageUrl && (
-                        <View style={styles.resultImageContainer}>
-                          <Image source={{ uri: currentQuestion.imageUrl }} style={styles.resultImage} />
-                        </View>
-                      )}
-                    </>
+                    <Text style={styles.celebrationEmoji}>🏆🌟👑</Text>
                   )}
-                </View>
+                </Animated.View>
               )}
 
               {!feedbackMessage && (
@@ -278,7 +297,11 @@ const QuizScreen = ({ navigation }) => {
                   <Text style={styles.submitButtonText}>답 정하기! ✨</Text>
                 </TouchableOpacity>
               )}
-            </Animated.View>
+            </View>
+            {/* Progress Bar */}
+            <View style={styles.progressBarContainer}>
+              <View style={[styles.progressBar, { width: `${((currentQuestionIndex + 1) / TOTAL_QUESTIONS) * 100}%` }]} />
+            </View>
           </View>
         </SafeAreaView>
       </ImageBackground>
@@ -295,7 +318,6 @@ const styles = StyleSheet.create({
   contentBackground: {
     flex: 1,
     width: "100%",
-    minHeight: "100vh",
   },
   container: {
     flex: 1,
@@ -315,6 +337,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: "#DDD",
+    zIndex: 50, // Increase zIndex to ensure clickability
+    elevation: 10,
   },
   headerBackButtonText: {
     fontSize: 14,
@@ -349,8 +373,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 15,
-    paddingTop: 20,
-    width: '100%', // Ensure it takes full width of wrapper
+    paddingTop: 10,
+    paddingBottom: 20,
+    width: '100%',
   },
   maxWidthWrapper: {
     flex: 1,
@@ -398,7 +423,7 @@ const styles = StyleSheet.create({
   },
   questionImage: {
     width: "100%",
-    height: 150,
+    height: 195, // Increased from 150 (1.3x)
     borderRadius: 15,
     marginBottom: 10,
     resizeMode: "contain",
@@ -478,6 +503,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
+  },
+  progressBarContainer: {
+    height: 10,
+    backgroundColor: "#E0E0E0",
+    borderRadius: 5,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    overflow: "hidden",
+  },
+  progressBar: {
+    height: "100%",
+    backgroundColor: "#FF6347",
+    borderRadius: 5,
   },
 });
 
