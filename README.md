@@ -37,3 +37,7 @@
 ## 👨‍💻 개발자 정보
 - **제작**: 정우 아빠 (SeungMin Park)
 - **개발 환경**: Windows / PowerShell / VS Code
+
+---
+Original Remote URL: https://SeungMin-Park-psm1757.github.io/quiz-for-son-math/
+
