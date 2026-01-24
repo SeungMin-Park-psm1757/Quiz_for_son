@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 import backgroundImage from "../../assets/images/background.png";
 
@@ -28,28 +29,33 @@ const CategorySelectScreen = ({ navigation, route }) => {
       >
         <View style={styles.overlay}>
           <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-              <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton}>
-                <Text style={styles.backButtonText}>🏠 홈으로</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.content}>
-              <Text style={styles.title}>어떤 퀴즈를 풀어볼까?</Text>
-              <Text style={styles.subtitle}>어떤 모험을 시작할까요?</Text>
-
-              <View style={styles.buttonList}>
-                {categories.map((category) => (
-                  <TouchableOpacity
-                    key={category.key}
-                    style={[styles.categoryButton, { backgroundColor: category.color }]}
-                    onPress={() => navigation.navigate("Quiz", { category: category.key, userId })}
-                  >
-                    <Text style={styles.categoryButtonText}>{category.name}</Text>
-                  </TouchableOpacity>
-                ))}
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.header}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton}>
+                  <Text style={styles.backButtonText}>🏠 홈으로</Text>
+                </TouchableOpacity>
               </View>
-            </View>
+
+              <View style={styles.content}>
+                <Text style={styles.title}>어떤 퀴즈를 풀어볼까?</Text>
+                <Text style={styles.subtitle}>어떤 모험을 시작할까요?</Text>
+
+                <View style={styles.buttonList}>
+                  {categories.map((category) => (
+                    <TouchableOpacity
+                      key={category.key}
+                      style={[styles.categoryButton, { backgroundColor: category.color }]}
+                      onPress={() => navigation.navigate("Quiz", { category: category.key, userId })}
+                    >
+                      <Text style={styles.categoryButtonText}>{category.name}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </ScrollView>
           </SafeAreaView>
         </View>
       </ImageBackground>
@@ -74,6 +80,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
   header: {
     padding: 20,
     paddingTop: 50,
@@ -89,7 +99,6 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   content: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "flex-start", // Fix low-bias by starting from top
     paddingTop: 40, // Add top spacing

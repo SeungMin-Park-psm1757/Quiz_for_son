@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { db } from "../config/firebaseConfig";
@@ -47,52 +48,57 @@ const ResultScreen = ({ navigation }) => {
     >
       <View style={styles.overlay}>
         <SafeAreaView style={styles.container}>
-          <View style={styles.content}>
-            <Text style={styles.title}>탐험 완료! 🏆</Text>
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.content}>
+              <Text style={styles.title}>탐험 완료! 🏆</Text>
 
-            <View style={styles.resultCard}>
-              <Text style={styles.categoryName}>
-                {category === "fish_marine" ? "물고기 친구들" :
-                  category === "animals" ? "동물 친구들" :
-                    category === "dinosaurs" ? "공룡의 세계" :
-                      category === "insects" ? "꿈틀꿈틀 곤충" : category.toUpperCase()}
-              </Text>
+              <View style={styles.resultCard}>
+                <Text style={styles.categoryName}>
+                  {category === "fish_marine" ? "물고기 친구들" :
+                    category === "animals" ? "동물 친구들" :
+                      category === "dinosaurs" ? "공룡의 세계" :
+                        category === "insects" ? "꿈틀꿈틀 곤충" : category.toUpperCase()}
+                </Text>
 
-              <View style={[styles.scoreCircle, { backgroundColor: percentage > 70 ? "#2ECC71" : "#FF6347" }]}>
-                <Text style={styles.scoreNumber}>{correctAnswersCount}</Text>
-                <Text style={styles.scoreTotal}>/ {totalQuestions}</Text>
+                <View style={[styles.scoreCircle, { backgroundColor: percentage > 70 ? "#2ECC71" : "#FF6347" }]}>
+                  <Text style={styles.scoreNumber}>{correctAnswersCount}</Text>
+                  <Text style={styles.scoreTotal}>/ {totalQuestions}</Text>
+                </View>
+
+                <Text style={styles.congratsText}>
+                  {correctAnswersCount === 10 ? "우와, 전설의 탐험가예요! 🏆👑" :
+                    correctAnswersCount >= 3 ? `${correctAnswersCount}문제 맞혔어요! 대단해요! 🌟` :
+                      `${correctAnswersCount}개 맞혔어요! 조금 아쉽지만 노력하면 더 잘할 수 있어요! 💪`}
+                </Text>
               </View>
 
-              <Text style={styles.congratsText}>
-                {correctAnswersCount === 10 ? "우와, 전설의 탐험가예요! 🏆👑" :
-                  correctAnswersCount >= 3 ? `${correctAnswersCount}문제 맞혔어요! 대단해요! 🌟` :
-                    `${correctAnswersCount}개 맞혔어요! 조금 아쉽지만 노력하면 더 잘할 수 있어요! 💪`}
-              </Text>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.retryButton]}
+                  onPress={() => navigation.replace("Quiz", { category, userId })}
+                >
+                  <Text style={styles.actionButtonText}>🔄 다시 도전하기</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.categoryButton]}
+                  onPress={() => navigation.navigate("CategorySelect", { userId })}
+                >
+                  <Text style={styles.actionButtonText}>📚 다른 카테고리</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.homeButton]}
+                  onPress={() => navigation.popToTop()}
+                >
+                  <Text style={[styles.actionButtonText, styles.homeButtonText]}>🏠 홈으로 가기</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[styles.actionButton, styles.retryButton]}
-                onPress={() => navigation.replace("Quiz", { category, userId })}
-              >
-                <Text style={styles.actionButtonText}>🔄 다시 도전하기</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.actionButton, styles.categoryButton]}
-                onPress={() => navigation.navigate("CategorySelect", { userId })}
-              >
-                <Text style={styles.actionButtonText}>📚 다른 카테고리</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.actionButton, styles.homeButton]}
-                onPress={() => navigation.popToTop()}
-              >
-                <Text style={[styles.actionButtonText, styles.homeButtonText]}>🏠 홈으로 가기</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          </ScrollView>
         </SafeAreaView>
       </View>
     </ImageBackground>
@@ -112,11 +118,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    paddingBottom: 20,
+  },
   content: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+    width: "100%",
   },
   title: {
     fontSize: 40,

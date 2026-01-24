@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 import backgroundImage from "../../assets/images/background.png";
 
@@ -20,25 +21,30 @@ const HomeScreen = ({ navigation, route }) => {
         resizeMode="cover"
       >
         <SafeAreaView style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.mainTitle}>정우의</Text>
-            <Text style={[styles.mainTitle, styles.subTitle]}>퀴즈 모험</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.actionButton, styles.startButton]}
-              onPress={() => navigation.navigate("CategorySelect", { userId })}
-            >
-              <Text style={styles.actionButtonText}>탐험 시작! 🚀</Text>
-            </TouchableOpacity>
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.titleContainer}>
+              <Text style={styles.mainTitle}>정우의</Text>
+              <Text style={[styles.mainTitle, styles.subTitle]}>퀴즈 모험</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.startButton]}
+                onPress={() => navigation.navigate("CategorySelect", { userId })}
+              >
+                <Text style={styles.actionButtonText}>탐험 시작! 🚀</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.actionButton, styles.recordsButton]}
-              onPress={() => navigation.navigate("Records", { userId })}
-            >
-              <Text style={styles.actionButtonText}>나의 기록 📓</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.recordsButton]}
+                onPress={() => navigation.navigate("Records", { userId })}
+              >
+                <Text style={styles.actionButtonText}>나의 기록 📓</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </ImageBackground>
     </View>
@@ -58,12 +64,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "space-between",
+    paddingBottom: 50,
+  },
   buttonContainer: {
-    flex: 1,
-    justifyContent: "flex-end", // Push buttons to bottom
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingBottom: 50, // Add space at bottom
+    marginBottom: 50,
   },
   titleContainer: {
     marginTop: 50,
