@@ -9,34 +9,48 @@ import {
   ScrollView,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { db } from "../config/firebaseConfig";
-import backgroundImage from "../../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.jpg";
+import {
+  DEFAULT_USER_ID,
+  getCategoryMeta,
+  getUserDisplayName,
+} from "../constants/appConfig";
+import { getUserLifetimeStats } from "../services/historyService";
 
 const ResultScreen = ({ navigation }) => {
   const route = useRoute();
   const { totalQuestions, correctAnswersCount, category } = route.params;
 
-  const [userTotalCorrect, setUserTotalCorrect] = useState(0);
-  const [userQuizzesCompleted, setUserQuizzesCompleted] = useState(0);
-  const userId = "jungwoo_explorer";
+  const userId = DEFAULT_USER_ID;
+  const userName = getUserDisplayName();
+  const categoryMeta = getCategoryMeta(category);
+  const [lifetimeStats, setLifetimeStats] = useState({
+    totalAttempts: 0,
+    completedAttempts: 0,
+    totalCorrectAnswers: 0,
+    averageAccuracy: 0,
+  });
 
   useEffect(() => {
-    const fetchUserProgress = async () => {
-      if (!db) return;
+    let isMounted = true;
+
+    const loadLifetimeStats = async () => {
       try {
-        const userProgressRef = db.collection("user_progress").doc(userId);
-        const doc = await userProgressRef.get();
-        if (doc.exists) {
-          const data = doc.data();
-          setUserTotalCorrect(data.totalCorrectAnswers || 0);
-          setUserQuizzesCompleted(data.quizzesCompleted || 0);
+        const stats = await getUserLifetimeStats(userId);
+        if (isMounted) {
+          setLifetimeStats(stats);
         }
       } catch (error) {
-        console.error("Error fetching user progress: ", error);
+        console.error("Error fetching lifetime history:", error);
       }
     };
-    fetchUserProgress();
-  }, []);
+
+    loadLifetimeStats();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId]);
 
   const percentage = totalQuestions > 0 ? (correctAnswersCount / totalQuestions) * 100 : 0;
 
@@ -53,15 +67,10 @@ const ResultScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.content}>
-              <Text style={styles.title}>탐험 완료! 🏆</Text>
+              <Text style={styles.title}>{userName}의 탐험 완료! 🏆</Text>
 
               <View style={styles.resultCard}>
-                <Text style={styles.categoryName}>
-                  {category === "fish_marine" ? "물고기 친구들" :
-                    category === "animals" ? "동물 친구들" :
-                      category === "dinosaurs" ? "공룡의 세계" :
-                        category === "insects" ? "꿈틀꿈틀 곤충" : category.toUpperCase()}
-                </Text>
+                <Text style={styles.categoryName}>{categoryMeta.shortLabel}</Text>
 
                 <View style={[styles.scoreCircle, { backgroundColor: percentage > 70 ? "#2ECC71" : "#FF6347" }]}>
                   <Text style={styles.scoreNumber}>{correctAnswersCount}</Text>
@@ -73,6 +82,22 @@ const ResultScreen = ({ navigation }) => {
                     correctAnswersCount >= 3 ? `${correctAnswersCount}문제 맞혔어요! 대단해요! 🌟` :
                       `${correctAnswersCount}개 맞혔어요! 조금 아쉽지만 노력하면 더 잘할 수 있어요! 💪`}
                 </Text>
+              </View>
+
+              <View style={styles.progressCard}>
+                <Text style={styles.progressTitle}>{userName}의 누적 기록</Text>
+                <View style={styles.progressRow}>
+                  <Text style={styles.progressLabel}>완료한 탐험</Text>
+                  <Text style={styles.progressValue}>{lifetimeStats.completedAttempts}회</Text>
+                </View>
+                <View style={styles.progressRow}>
+                  <Text style={styles.progressLabel}>누적 정답</Text>
+                  <Text style={styles.progressValue}>{lifetimeStats.totalCorrectAnswers}개</Text>
+                </View>
+                <View style={styles.progressRow}>
+                  <Text style={styles.progressLabel}>평균 정답률</Text>
+                  <Text style={styles.progressValue}>{lifetimeStats.averageAccuracy}%</Text>
+                </View>
               </View>
 
               <View style={styles.buttonContainer}>
@@ -92,7 +117,7 @@ const ResultScreen = ({ navigation }) => {
 
                 <TouchableOpacity
                   style={[styles.actionButton, styles.homeButton]}
-                  onPress={() => navigation.popToTop()}
+                  onPress={() => navigation.navigate("Home")}
                 >
                   <Text style={[styles.actionButtonText, styles.homeButtonText]}>🏠 홈으로 가기</Text>
                 </TouchableOpacity>
@@ -198,7 +223,7 @@ const styles = StyleSheet.create({
   progressRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 5,
+    marginBottom: 8,
   },
   progressLabel: {
     fontSize: 15,

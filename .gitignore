@@ -2,9 +2,12 @@ node_modules/
 .expo/
 npm-debug.log
 yarn-error.log
-assets/
+assets/*
 !assets/icon.png
 !assets/splash.png
 !assets/adaptive-icon.png
 !assets/favicon.png
+!assets/images/
+assets/images/*
+!assets/images/background.jpg
 node_modules

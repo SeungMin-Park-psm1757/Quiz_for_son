@@ -8,10 +8,11 @@ import {
   ImageBackground,
   ScrollView,
 } from "react-native";
-import backgroundImage from "../../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.jpg";
+import { getUserDisplayName } from "../constants/appConfig";
 
-const HomeScreen = ({ navigation, route }) => {
-  const userId = route.params?.userId || "jungwoo_explorer";
+const HomeScreen = ({ navigation }) => {
+  const userName = getUserDisplayName();
 
   return (
     <View style={styles.mainContainer}>
@@ -26,20 +27,20 @@ const HomeScreen = ({ navigation, route }) => {
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.titleContainer}>
-              <Text style={styles.mainTitle}>정우의</Text>
+              <Text style={styles.mainTitle}>{userName}의</Text>
               <Text style={[styles.mainTitle, styles.subTitle]}>퀴즈 모험</Text>
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.actionButton, styles.startButton]}
-                onPress={() => navigation.navigate("CategorySelect", { userId })}
+                onPress={() => navigation.navigate("CategorySelect")}
               >
                 <Text style={styles.actionButtonText}>탐험 시작! 🚀</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[styles.actionButton, styles.recordsButton]}
-                onPress={() => navigation.navigate("Records", { userId })}
+                onPress={() => navigation.navigate("Records")}
               >
                 <Text style={styles.actionButtonText}>나의 기록 📓</Text>
               </TouchableOpacity>

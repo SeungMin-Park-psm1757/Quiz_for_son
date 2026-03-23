@@ -1,24 +1,49 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Storage Keys
 const QUIZ_HISTORY_KEY = 'quiz_history';
 const DAILY_STATS_KEY = 'daily_stats';
 
-// Helper to get KST date string
-const getKSTDateString = () => {
-    const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000;
-    const kstDate = new Date(now.getTime() + kstOffset);
-    return kstDate.toISOString().split('T')[0]; // YYYY-MM-DD
+const parseStoredJson = (rawValue, fallbackValue) => {
+    if (!rawValue) {
+        return fallbackValue;
+    }
+
+    try {
+        return JSON.parse(rawValue);
+    } catch (error) {
+        console.error("Error parsing stored JSON:", error);
+        return fallbackValue;
+    }
 };
 
-// Save quiz history to local storage
+const getKSTDateString = () => {
+    if (typeof Intl !== "undefined" && Intl.DateTimeFormat) {
+        const parts = new Intl.DateTimeFormat("en-CA", {
+            timeZone: "Asia/Seoul",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        }).formatToParts(new Date());
+
+        const values = Object.fromEntries(
+            parts
+                .filter(({ type }) => type !== "literal")
+                .map(({ type, value }) => [type, value])
+        );
+
+        return `${values.year}-${values.month}-${values.day}`;
+    }
+
+    return new Date(Date.now() + 9 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0];
+};
+
 export const saveQuizHistory = async (userId, category, score, totalQuestions, status = 'completed') => {
     try {
         const today = getKSTDateString();
         const timestamp = new Date().toISOString();
 
-        // Create history entry
         const historyEntry = {
             id: `${userId}_${timestamp}`,
             userId,
@@ -31,28 +56,23 @@ export const saveQuizHistory = async (userId, category, score, totalQuestions, s
             accuracy: totalQuestions > 0 ? (score / totalQuestions) * 100 : 0
         };
 
-        // 1. Save to detailed history
         const existingHistory = await AsyncStorage.getItem(QUIZ_HISTORY_KEY);
-        const historyArray = existingHistory ? JSON.parse(existingHistory) : [];
-        historyArray.unshift(historyEntry); // Add to beginning
+        const historyArray = parseStoredJson(existingHistory, []);
+        historyArray.unshift(historyEntry);
 
-        // Keep only last 500 entries to prevent storage overflow
         if (historyArray.length > 500) {
             historyArray.pop();
         }
 
         await AsyncStorage.setItem(QUIZ_HISTORY_KEY, JSON.stringify(historyArray));
 
-        // 2. Update daily stats
         const dailyStatsRaw = await AsyncStorage.getItem(DAILY_STATS_KEY);
-        const dailyStats = dailyStatsRaw ? JSON.parse(dailyStatsRaw) : {};
+        const dailyStats = parseStoredJson(dailyStatsRaw, {});
 
-        // Create userId stats if not exists
         if (!dailyStats[userId]) {
             dailyStats[userId] = {};
         }
 
-        // Create date stats if not exists
         if (!dailyStats[userId][today]) {
             dailyStats[userId][today] = {
                 totalAttempts: 0,
@@ -68,7 +88,6 @@ export const saveQuizHistory = async (userId, category, score, totalQuestions, s
         dayStats.totalQuestions += totalQuestions;
         dayStats.lastUpdated = timestamp;
 
-        // Update category stats
         if (!dayStats.categories[category]) {
             dayStats.categories[category] = { attempts: 0, totalScore: 0, totalQuestions: 0 };
         }
@@ -85,11 +104,10 @@ export const saveQuizHistory = async (userId, category, score, totalQuestions, s
     }
 };
 
-// Get monthly history for calendar display
 export const getMonthlyHistory = async (userId, year, month) => {
     try {
         const dailyStatsRaw = await AsyncStorage.getItem(DAILY_STATS_KEY);
-        const dailyStats = dailyStatsRaw ? JSON.parse(dailyStatsRaw) : {};
+        const dailyStats = parseStoredJson(dailyStatsRaw, {});
 
         if (!dailyStats[userId]) {
             return {};
@@ -98,7 +116,6 @@ export const getMonthlyHistory = async (userId, year, month) => {
         const userStats = dailyStats[userId];
         const result = {};
 
-        // Filter by year-month
         const monthPrefix = `${year}-${String(month).padStart(2, '0')}`;
 
         Object.keys(userStats).forEach(dateStr => {
@@ -114,13 +131,11 @@ export const getMonthlyHistory = async (userId, year, month) => {
     }
 };
 
-// Get detailed logs for a specific day
 export const getDailyLogs = async (userId, dateStr) => {
     try {
         const historyRaw = await AsyncStorage.getItem(QUIZ_HISTORY_KEY);
-        const historyArray = historyRaw ? JSON.parse(historyRaw) : [];
+        const historyArray = parseStoredJson(historyRaw, []);
 
-        // Filter by userId and date
         const dayLogs = historyArray.filter(entry =>
             entry.userId === userId && entry.date === dateStr
         );
@@ -132,11 +147,10 @@ export const getDailyLogs = async (userId, dateStr) => {
     }
 };
 
-// Get all history for a user
 export const getAllHistory = async (userId) => {
     try {
         const historyRaw = await AsyncStorage.getItem(QUIZ_HISTORY_KEY);
-        const historyArray = historyRaw ? JSON.parse(historyRaw) : [];
+        const historyArray = parseStoredJson(historyRaw, []);
 
         return historyArray.filter(entry => entry.userId === userId);
     } catch (error) {
@@ -145,7 +159,21 @@ export const getAllHistory = async (userId) => {
     }
 };
 
-// Clear all history (for testing)
+export const getUserLifetimeStats = async (userId) => {
+    const history = await getAllHistory(userId);
+    const completedHistory = history.filter(entry => entry.status !== 'cancelled');
+    const totalCorrectAnswers = completedHistory.reduce((sum, entry) => sum + (entry.score || 0), 0);
+    const totalQuestions = completedHistory.reduce((sum, entry) => sum + (entry.totalQuestions || 0), 0);
+
+    return {
+        totalAttempts: history.length,
+        completedAttempts: completedHistory.length,
+        totalCorrectAnswers,
+        totalQuestions,
+        averageAccuracy: totalQuestions > 0 ? Math.round((totalCorrectAnswers / totalQuestions) * 100) : 0,
+    };
+};
+
 export const clearAllHistory = async () => {
     try {
         await AsyncStorage.removeItem(QUIZ_HISTORY_KEY);

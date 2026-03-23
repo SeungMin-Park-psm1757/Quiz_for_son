@@ -8,17 +8,10 @@ import {
   ImageBackground,
   ScrollView,
 } from "react-native";
-import backgroundImage from "../../assets/images/background.png";
+import backgroundImage from "../../assets/images/background.jpg";
+import { PLAYABLE_CATEGORY_OPTIONS } from "../constants/appConfig";
 
-const CategorySelectScreen = ({ navigation, route }) => {
-  const userId = route.params?.userId || "jungwoo_explorer";
-  const categories = [
-    { name: "물고기 친구들 🐠", key: "fish_marine", color: "#4682B4" },
-    { name: "동물 친구들 🦁", key: "animals", color: "#FFD700" },
-    { name: "공룡의 세계 🦖", key: "dinosaurs", color: "#228B22" },
-    { name: "꿈틀꿈틀 곤충 🦋", key: "insects", color: "#BA55D3" },
-  ];
-
+const CategorySelectScreen = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
@@ -44,13 +37,13 @@ const CategorySelectScreen = ({ navigation, route }) => {
                 <Text style={styles.subtitle}>어떤 모험을 시작할까요?</Text>
 
                 <View style={styles.buttonList}>
-                  {categories.map((category) => (
+                  {PLAYABLE_CATEGORY_OPTIONS.map((category) => (
                     <TouchableOpacity
                       key={category.key}
                       style={[styles.categoryButton, { backgroundColor: category.color }]}
-                      onPress={() => navigation.navigate("Quiz", { category: category.key, userId })}
+                      onPress={() => navigation.navigate("Quiz", { category: category.key })}
                     >
-                      <Text style={styles.categoryButtonText}>{category.name}</Text>
+                      <Text style={styles.categoryButtonText}>{category.label}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>

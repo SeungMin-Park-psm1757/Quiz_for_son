@@ -8,7 +8,6 @@ import CategorySelectScreen from "./src/screens/CategorySelectScreen";
 import QuizScreen from "./src/screens/QuizScreen";
 import ResultScreen from "./src/screens/ResultScreen";
 import RecordsScreen from "./src/screens/RecordsScreen";
-import LoginScreen from "./src/screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,12 +16,7 @@ export default function App() {
     <View style={styles.rootContainer}>
       <View style={styles.appContainer}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
+          <Stack.Navigator initialRouteName="Home">
             <Stack.Screen
               name="Home"
               component={HomeScreen}

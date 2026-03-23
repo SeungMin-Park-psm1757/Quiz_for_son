@@ -27,8 +27,8 @@ const allQuizAnswers = {
     "게", "고등어", "가자미", "바다표범", "말미잘", "돛새치", "소라게", "물범",
     "바닷가재", "해삼", "다랑어", "청어", "멸치", "병어", "고래상어", "망치상어",
     "벨루가", "범고래", "매너티", "듀공", "아귀", "날치", "청새치",
-    "넙치", "베타", "뱅어", "학꽁치", "전복", "밤게", "투구게", "심해어", "집게", "먹장어",
-    "앵무고기", "엔젤피쉬", "망둑어", "가시복", "실고기", "쏠종개", "멍게", "물개",
+    "넙치", "베타", "뱅어", "학꽁치", "전복", "밤게", "투구게", "심해어", "소라게", "먹장어",
+    "앵무고기", "엔젤피쉬", "짱뚱어", "가시복", "실고기", "쏠종개", "멍게", "물개",
     "빨판상어", "쥐가오리", "전어", "금눈돔", "갈치", "대하", "킹크랩", "쭈꾸미",
     "갑오징어", "굴", "꼬막", "대나무조개", "도미", "미꾸라지", "송어", "은어",
     "물총고기", "배럴아이", "블롭피쉬", "초롱아귀"
@@ -358,7 +358,8 @@ const quizQuestions = [
   {
     id: "fish_marine050", category: "fish_marine", difficulty: "medium",
     question: "바닷속 모래 구멍 속에 쏙 들어가서 얼굴만 빼꼼히 내밀고 바람에 흔들리는 꽃처럼 지내! 수천 마리가 함께 모여 있으면 꼭 바닷속에 정원이 생긴 것 같아서 '정원 장어'라고도 불린단다. 적이 나타나면 순식간에 구멍 속으로 쏙~ 하고 숨어버리는 이 부끄럼쟁이 친구는 누구일까요?",
-    answer: "가든일",
+    answer: "정원장어",
+    customOptions: ["정원장어", "해마", "실고기"],
   },
   {
     id: "fish_marine051", category: "fish_marine", difficulty: "easy",
@@ -386,7 +387,7 @@ const quizQuestions = [
   },
   {
     id: "fish_marine055", category: "fish_marine", difficulty: "easy",
-    question: "머리 위에 혹부리 영감처럼 뽈록한 혹이 솟아나 있는 아주 독명하고 개성 넘치는 친구야! 어릴 때는 평범하지만 자라면서 이 커다란 혹이 생기고 턱도 튼튼해져서 딱딱한 조개도 잘 씹어 먹는단다. 바다의 대장처럼 듬직하고 멋진 이마를 가진 이 물고기는 누구일까요?",
+    question: "머리 위에 혹부리 영감처럼 뽈록한 혹이 솟아나 있는 아주 독특하고 개성 넘치는 친구야! 어릴 때는 평범하지만 자라면서 이 커다란 혹이 생기고 턱도 튼튼해져서 딱딱한 조개도 잘 씹어 먹는단다. 바다의 대장처럼 듬직하고 멋진 이마를 가진 이 물고기는 누구일까요?",
     answer: "혹돔",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Semicossyphus_reticulatus.jpg/500px-Semicossyphus_reticulatus.jpg",
   },
@@ -1412,7 +1413,7 @@ const quizQuestions = [
   },
   {
     id: "insects050", category: "insects", difficulty: "easy",
-    question: "나무 껍질과 아주 똑같이 생긴 갈색 옷을 입고 나무에 딱 붙어서 즙을 빨아 먹는 변신의 대장이야! 커다란 날개로 나무 사이를 윙윙거리며 아주 힘차게 날아다니는 여름의 가수이기도 하단다. 숲속 나무의 수액을 아주 즐겨 먹는 이 듬직한 공충은 누구일까요?",
+    question: "나무 껍질과 아주 똑같이 생긴 갈색 옷을 입고 나무에 딱 붙어서 즙을 빨아 먹는 변신의 대장이야! 커다란 날개로 나무 사이를 윙윙거리며 아주 힘차게 날아다니는 여름의 가수이기도 하단다. 숲속 나무의 수액을 아주 즐겨 먹는 이 듬직한 곤충은 누구일까요?",
     answer: "말매미",
   },
   {
@@ -1424,7 +1425,8 @@ const quizQuestions = [
   {
     id: "insects052", category: "insects", difficulty: "easy",
     question: "하얀 솜사탕 같은 것을 몸에 붙이고 식물 즙을 먹으며 사는 벌레는 누구일까요?",
-    answer: "솜솜이벌레",
+    answer: "솜깍지벌레",
+    customOptions: ["솜깍지벌레", "개미귀신", "하루살이"],
   },
   {
     id: "insects053", category: "insects", difficulty: "medium",
@@ -1494,7 +1496,11 @@ const quizQuestions = [
     id: "fish_marine068", category: "fish_marine", question: "아주 깊은 바다에 살며 눈이 퇴화된 심해어는?", answer: "심해어",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Messina_Straits_Chauliodus_sloani.jpg/500px-Messina_Straits_Chauliodus_sloani.jpg",
   },
-  { id: "fish_marine069", category: "fish_marine", question: "고둥 껍데기를 쓰고 사는 귀여운 바다의 입주민은?", answer: "집게" },
+  {
+    id: "fish_marine069", category: "fish_marine", question: "고둥 껍데기를 집처럼 등에 지고 사는 귀여운 바다 친구는?",
+    answer: "소라게",
+    customOptions: ["소라게", "성게", "해삼"],
+  },
   {
     id: "fish_marine070", category: "fish_marine", question: "몸에서 끈적한 액체가 나오고 바다의 청소부 역할을 하는 것은?", answer: "먹장어",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Eptatretus_hexatrema_15727711.jpg/500px-Eptatretus_hexatrema_15727711.jpg",
@@ -1504,7 +1510,11 @@ const quizQuestions = [
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Scarus_frenatus_by_Ewa_Barska.jpg/500px-Scarus_frenatus_by_Ewa_Barska.jpg",
   },
   { id: "fish_marine072", category: "fish_marine", question: "노란색과 파란색 줄무늬가 있는 열대어의 여왕은?", answer: "엔젤피쉬" },
-  { id: "fish_marine073", category: "fish_marine", question: "눈이 튀어나와 있고 갯벌을 뛰어다니는 물고기는?", answer: "망둑어" },
+  {
+    id: "fish_marine073", category: "fish_marine", question: "눈이 튀어나와 있고 갯벌을 껑충껑충 뛰어다니는 물고기는?",
+    answer: "짱뚱어",
+    customOptions: ["짱뚱어", "실고기", "학꽁치"],
+  },
   {
     id: "fish_marine074", category: "fish_marine", question: "몸이 둥글고 가시가 돋아 있는 복어의 친구는?", answer: "가시복",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Long-spine_porcupinefish_%28Diodon_holocanthus%29.jpg/500px-Long-spine_porcupinefish_%28Diodon_holocanthus%29.jpg",
@@ -1592,7 +1602,7 @@ const quizQuestions = [
     id: "animals061", category: "animals", question: "산타클로스 할아버지의 썰매를 끄는 사슴은?", answer: "순록",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Reinbukken_p%C3%A5_frisk_gr%C3%B8nt_beite._-_panoramio.jpg/500px-Reinbukken_p%C3%A5_frisk_gr%C3%B8nt_beite._-_panoramio.jpg",
   },
-  { id: "animals062", category: "animals", question: "털이 복슬복슬하고 '음매' 우는 양과 비슷한 동물은?", answer: "염소" },
+  { id: "animals062", category: "animals", question: "털이 복슬복슬하고 '메에' 하고 우는 양과 비슷한 동물은?", answer: "염소" },
   { id: "animals063", category: "animals", question: "아주 빠른 다리를 가졌고 경주를 좋아하는 동물은?", answer: "말" },
   {
     id: "animals064", category: "animals", question: "짐을 나르는 힘 센 동물로, 말과 비슷하지만 귀가 긴 친구는?", answer: "당나귀",
@@ -1645,7 +1655,13 @@ const quizQuestions = [
     id: "animals078", category: "animals", question: "알을 낳는 포유류로, 오리 부리를 가진 신기한 동물은?", answer: "오리너구리",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Wild_Platypus_4.jpg/500px-Wild_Platypus_4.jpg",
   },
-  { id: "animals079", category: "animals", question: "가시가 돋친 바늘두더지는 알을 낳을까요, 새끼를 낳을까요? (정답: 바늘두더지)", answer: "바늘두더지" },
+  {
+    id: "animals079",
+    category: "animals",
+    question: "가시가 돋친 바늘두더지는 알을 낳을까요, 새끼를 낳을까요?",
+    answer: "알을 낳아요",
+    customOptions: ["알을 낳아요", "새끼를 낳아요", "둘 다 아니에요"],
+  },
   {
     id: "animals080", category: "animals", question: "나무와 나무 사이를 날아다니는 다람쥐는?", answer: "하늘다람쥐",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Pteromys_volans.jpg/500px-Pteromys_volans.jpg",
@@ -1768,7 +1784,13 @@ const quizQuestions = [
     id: "insects075", category: "insects", question: "반딧불이의 애벌레가 좋아하는 먹이는?", answer: "다슬기",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Semisulcospira_kurodai2.jpg/500px-Semisulcospira_kurodai2.jpg",
   },
-  { id: "insects076", category: "insects", question: "꿀벌이 춤을 추며 친구들에게 알려주는 것은?", answer: "꽃의 위치" },
+  {
+    id: "insects076",
+    category: "insects",
+    question: "꿀벌이 춤을 추며 친구들에게 알려주는 것은?",
+    answer: "꽃이 있는 곳",
+    customOptions: ["꽃이 있는 곳", "비 오는 시간", "잠자는 방법"],
+  },
   {
     id: "insects077", category: "insects", question: "여왕벌을 위해 일만 하는 벌은?", answer: "일벌",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Todd_Huffman_-_Lattice_%28by%29.jpg/500px-Todd_Huffman_-_Lattice_%28by%29.jpg",
@@ -1779,12 +1801,26 @@ const quizQuestions = [
   },
   { id: "insects079", category: "insects", question: "흙으로 집을 짓는 벌은?", answer: "호리병벌" },
   {
-    id: "insects080", category: "insects", question: "나비의 입은 어떻게 생겼을까요?", answer: "빨대",
+    id: "insects080",
+    category: "insects",
+    question: "나비의 입은 어떻게 생겼을까요?",
+    answer: "빨대처럼 생겼어요",
+    customOptions: ["빨대처럼 생겼어요", "숟가락처럼 생겼어요", "가위처럼 생겼어요"],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Drink_with_straw.jpg/500px-Drink_with_straw.jpg",
   },
-  { id: "insects081", category: "insects", question: "나비의 날개에 있는 가루는 무엇일까요?", answer: "인분" },
   {
-    id: "insects082", category: "insects", question: "누에나방의 애벌레가 짓는 집은?", answer: "고치",
+    id: "insects081",
+    category: "insects",
+    question: "나비의 날개에 있는 가루는 무엇일까요?",
+    answer: "비늘가루",
+    customOptions: ["비늘가루", "솜털", "모래"],
+  },
+  {
+    id: "insects082",
+    category: "insects",
+    question: "누에나방의 애벌레가 짓는 집은?",
+    answer: "고치",
+    customOptions: ["고치", "개미집", "벌집"],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Actias_luna_cocoons_sjh.JPG/500px-Actias_luna_cocoons_sjh.JPG",
   },
   { id: "insects083", category: "insects", question: "옷을 갉아먹는 나방의 애벌레는?", answer: "좀나방" },
@@ -1792,20 +1828,72 @@ const quizQuestions = [
     id: "insects084", category: "insects", question: "불빛을 보고 모여드는 털이 많은 곤충은?", answer: "나방",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Polyphemus_Moth.jpg/500px-Polyphemus_Moth.jpg",
   },
-  { id: "insects085", category: "insects", question: "거미는 곤충일까요, 아닐까요? (정답: 아님)", answer: "아님" },
+  {
+    id: "insects085",
+    category: "insects",
+    question: "거미는 곤충일까요, 아닐까요?",
+    answer: "아니에요",
+    customOptions: ["곤충이에요", "아니에요", "잘 모르겠어요"],
+  },
   { id: "insects086", category: "insects", question: "거미줄을 치지 않고 땅 위를 돌아다니며 사냥하는 거미는?", answer: "늑대거미" },
   { id: "insects087", category: "insects", question: "아주 큰 거미로 새도 잡아먹는다는 거미는?", answer: "타란튤라" },
-  { id: "insects088", category: "insects", question: "전갈은 꼬리에 무엇이 있을까요?", answer: "독침" },
-  { id: "insects089", category: "insects", question: "지네는 다리가 많을까요, 적을까요?", answer: "많음" },
-  { id: "insects090", category: "insects", question: "공벌레를 건드리면 어떻게 될까요?", answer: "동그랗게 말림" },
-  { id: "insects091", category: "insects", question: "노래기에서는 무슨 냄새가 날까요?", answer: "고약한 냄새" },
-  { id: "insects092", category: "insects", question: "달팽이는 곤충일까요?", answer: "아님" },
-  { id: "insects093", category: "insects", question: "지렁이는 눈이 있을까요?", answer: "없음" },
   {
-    id: "insects094", category: "insects", question: "개미는 페로몬으로 무엇을 할까요?", answer: "대화",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Plato_and_Aristotle_dialectics_by_Luca_della_Robbia-Museo_dell%27Opera_del_Duomo-Florence.jpg/500px-Plato_and_Aristotle_dialectics_by_Luca_della_Robbia-Museo_dell%27Opera_del_Duomo-Florence.jpg",
+    id: "insects088",
+    category: "insects",
+    question: "전갈은 꼬리에 무엇이 있을까요?",
+    answer: "독침",
+    customOptions: ["독침", "리본", "집게"],
   },
-  { id: "insects095", category: "insects", question: "흰개미는 나무를 먹을까요?", answer: "먹음" },
+  {
+    id: "insects089",
+    category: "insects",
+    question: "지네는 다리가 많을까요, 적을까요?",
+    answer: "많아요",
+    customOptions: ["많아요", "적어요", "하나도 없어요"],
+  },
+  {
+    id: "insects090",
+    category: "insects",
+    question: "공벌레를 건드리면 어떻게 될까요?",
+    answer: "동그랗게 말려요",
+    customOptions: ["동그랗게 말려요", "하늘로 날아요", "색이 바뀌어요"],
+  },
+  {
+    id: "insects091",
+    category: "insects",
+    question: "노래기에서는 무슨 냄새가 날까요?",
+    answer: "고약한 냄새",
+    customOptions: ["고약한 냄새", "달콤한 냄새", "아무 냄새도 안 나요"],
+  },
+  {
+    id: "insects092",
+    category: "insects",
+    question: "달팽이는 곤충일까요?",
+    answer: "아니에요",
+    customOptions: ["곤충이에요", "아니에요", "잘 모르겠어요"],
+  },
+  {
+    id: "insects093",
+    category: "insects",
+    question: "지렁이는 눈이 있을까요?",
+    answer: "없어요",
+    customOptions: ["없어요", "두 개 있어요", "여섯 개 있어요"],
+  },
+  {
+    id: "insects094",
+    category: "insects",
+    question: "개미는 페로몬으로 무엇을 할까요?",
+    answer: "서로 신호를 주고받아요",
+    customOptions: ["서로 신호를 주고받아요", "잠을 더 오래 자요", "색을 바꿔요"],
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Meat_eater_ant_feeding_on_honey02.jpg/500px-Meat_eater_ant_feeding_on_honey02.jpg",
+  },
+  {
+    id: "insects095",
+    category: "insects",
+    question: "흰개미는 나무를 먹을까요?",
+    answer: "먹어요",
+    customOptions: ["먹어요", "안 먹어요", "물에서만 먹어요"],
+  },
   {
     id: "insects096", category: "insects", question: "진딧물의 천적은 누구일까요?", answer: "무당벌레",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Asian_lady_beetle-%28Harmonia-axyridis%29.jpg/500px-Asian_lady_beetle-%28Harmonia-axyridis%29.jpg",
@@ -1815,11 +1903,27 @@ const quizQuestions = [
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Aphidoidea_fight.jpg/500px-Aphidoidea_fight.jpg",
   },
   {
-    id: "insects098", category: "insects", question: "물방개의 애벌레는 무엇을 먹을까요?", answer: "올챙이",
+    id: "insects098",
+    category: "insects",
+    question: "물방개의 애벌레는 무엇을 먹을까요?",
+    answer: "올챙이",
+    customOptions: ["올챙이", "꽃가루", "나뭇잎"],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Bullfrog_Tadpole.jpg/500px-Bullfrog_Tadpole.jpg",
   },
-  { id: "insects099", category: "insects", question: "잠자리의 애벌레 이름은?", answer: "수채" },
-  { id: "insects100", category: "insects", question: "매미는 땅속에서 몇 년을 살까요?", answer: "7년" },
+  {
+    id: "insects099",
+    category: "insects",
+    question: "잠자리의 애벌레 이름은?",
+    answer: "수채",
+    customOptions: ["수채", "고치", "번데기"],
+  },
+  {
+    id: "insects100",
+    category: "insects",
+    question: "매미는 땅속에서 얼마나 오래 살까요?",
+    answer: "여러 해",
+    customOptions: ["여러 해", "하루만", "한 달만"],
+  },
 
   // --- BIRDS QUESTIONS (20 questions) ---
   {
@@ -1981,7 +2085,7 @@ const quizQuestions = [
   {
     id: "birds027", category: "birds", difficulty: "medium",
     question: "호수나 강가에서 물속으로 쏜살같이 들어가 물고기를 사냥하는 사냥의 달인이야! 선명한 주황색 배와 비취색 등을 가진 아주 아름다운 옷을 입었단다. 뾰족하고 긴 부리를 가진 물가의 보석이라고 불리는 이 새는 누구일까요?",
-    answer: "물떼새",
+    answer: "물총새",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Alcedo_atthis_2_%28Lukasz_Lukasik%29.jpg/500px-Alcedo_atthis_2_%28Lukasz_Lukasik%29.jpg",
   },
   {
@@ -2076,7 +2180,7 @@ const quizQuestions = [
   },
   {
     id: "birds051", category: "birds", difficulty: "medium",
-    question: "머리 위에 삐쭉하게 솟은 깃털 장식이 있고 꼬리를 위아래로 까딱까딱 흔드는 귀여운 물가의 친구야! 냇가의 돌 위에 앉아 있다가 물속으로 쏜살같이 들어가 물고기를 사냥한단다. 아주 작은 몸집에 용감한 성격을 가진 이 새는 누구일까요?",
+    question: "꼬리를 위아래로 까딱까딱 흔들며 냇가를 바쁘게 걸어 다니는 귀여운 물가의 친구야! 얕은 물가나 돌 위를 폴짝폴짝 오가며 작은 벌레를 잡아먹고, 맑은 소리로 노래하기도 한단다. 아주 작은 몸집에 부지런한 성격을 가진 이 새는 누구일까요?",
     answer: "할미새",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/White_Wagtail_Motacilla_alba.jpg/500px-White_Wagtail_Motacilla_alba.jpg",
   },
@@ -2124,19 +2228,19 @@ const quizQuestions = [
   },
   {
     id: "birds059", category: "birds", difficulty: "hard",
-    question: "머리에는 검은색 깃털이 있고 가슴은 주황색인 아주 화려하고 고운 옷을 입은 숲속의 가수야! 여름에 우리나라를 찾아와 아름다운 노래로 숲을 가득 채워주고 가을이 되면 다시 먼 여행을 떠나는 철새란다. 이름도 아주 예쁜 이 숲속의 보석은 누구일까요?",
-    answer: "검은머리쏙독새",
+    question: "온몸이 노란빛으로 반짝이고 눈 주변에 검은 무늬가 있어 숲속에서 금방 눈에 띄는 아름다운 가수야! 여름에 우리나라를 찾아와 맑고 고운 노래를 들려주고 가을이 되면 다시 먼 여행을 떠나는 철새란다. 이름만 들어도 노래가 떠오르는 이 새는 누구일까요?",
+    answer: "꾀꼬리",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Eurasian_Golden_Oriole_Oriolus_oriolus.jpg/500px-Eurasian_Golden_Oriole_Oriolus_oriolus.jpg",
   },
   {
     id: "birds060", category: "birds", difficulty: "hard",
-    question: "온몸이 눈부신 하얀색이고 날개가 엄청나게 커서 하늘을 날아오를 때 정말 장업한 바다의 여왕이야! 부리는 노란색이고 꼬리 깃털은 하늘하늘해서 마치 천사의 옷자락처럼 보인단다. 평화를 상징하는 세상에서 가장 아름다운 하얀 새 중 하나인 이것은 누구일까요?",
+    question: "온몸이 눈부신 하얀색이고 날개가 엄청나게 커서 하늘을 날아오를 때 정말 장엄한 바다의 여왕이야! 부리는 노란색이고 꼬리 깃털은 하늘하늘해서 마치 천사의 옷자락처럼 보인단다. 평화를 상징하는 세상에서 가장 아름다운 하얀 새 중 하나인 이것은 누구일까요?",
     answer: "고니",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Mute_swan_at_Stotfold_Mill.jpg/500px-Mute_swan_at_Stotfold_Mill.jpg",
   },
   {
     id: "birds033", category: "birds", difficulty: "easy",
-    question: "봄이 되면 처마 밑에 진흙으로 집을 짓고 돌아오는 아주 반가운 가을 손님이야! 매끈한 검은색 날개와 하얀 배, 그리고 제비 꼬리라고 부르는 갈라진 꼬리를 가졌단다. 해충을 잡아먹는 아주 고마운 이 새는 누구일까요?",
+    question: "봄이 되면 처마 밑에 진흙으로 집을 짓고 돌아오는 아주 반가운 봄 손님이야! 매끈한 검은색 날개와 하얀 배, 그리고 제비 꼬리라고 부르는 갈라진 꼬리를 가졌단다. 해충을 잡아먹는 아주 고마운 이 새는 누구일까요?",
     answer: "제비",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Barn_Swallow_Hirundo_rustica.jpg/500px-Barn_Swallow_Hirundo_rustica.jpg",
   },
@@ -2160,7 +2264,7 @@ const quizQuestions = [
   },
   {
     id: "birds037", category: "birds", difficulty: "medium",
-    question: "바닷속으로 자수해서 들어가 날개를 지느러미처럼 사용하며 수영하는 신기한 새야! 날개가 있지만 하늘을 날지는 못하고 대신 물고기를 아주 잘 잡는 잠수의 명수란다. 하얀 배를 땅에 대고 얼음 위를 미끄러지는 이 귀여운 새는 누구일까요?",
+    question: "바닷속으로 잠수해서 들어가 날개를 지느러미처럼 사용하며 수영하는 신기한 새야! 날개가 있지만 하늘을 날지는 못하고 대신 물고기를 아주 잘 잡는 잠수의 명수란다. 하얀 배를 땅에 대고 얼음 위를 미끄러지는 이 귀여운 새는 누구일까요?",
     answer: "아델리펭귄",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Adelie_Penguin.jpg/500px-Adelie_Penguin.jpg",
   },
@@ -2184,12 +2288,36 @@ const quizQuestions = [
   },
 ];
 
+const normalizeDifficulty = (difficulty) => {
+  if (difficulty === "easy" || difficulty === "medium" || difficulty === "hard") {
+    return difficulty;
+  }
+
+  return "medium";
+};
+
+const optionPoolByCategory = quizQuestions.reduce((accumulator, question) => {
+  if (question.customOptions) {
+    return accumulator;
+  }
+
+  if (!accumulator[question.category]) {
+    accumulator[question.category] = new Set();
+  }
+
+  accumulator[question.category].add(question.answer);
+  return accumulator;
+}, {});
+
 const processedQuizData = quizQuestions.map(q => {
-  const categoryAnswers = allQuizAnswers[q.category] || [];
-  const options = generateOptions(q.answer, q.category, categoryAnswers);
+  const categoryAnswers = optionPoolByCategory[q.category]
+    ? Array.from(optionPoolByCategory[q.category])
+    : allQuizAnswers[q.category] || [];
+  const options = q.customOptions || generateOptions(q.answer, q.category, categoryAnswers);
   const correctAnswerIndex = options.indexOf(q.answer);
   return {
     ...q,
+    difficulty: normalizeDifficulty(q.difficulty),
     options,
     correctAnswerIndex
   };

@@ -10,6 +10,11 @@ import {
 } from "react-native";
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { getMonthlyHistory, getDailyLogs } from "../services/historyService";
+import {
+    DEFAULT_USER_ID,
+    getCategoryMeta,
+    getUserDisplayName,
+} from "../constants/appConfig";
 
 // Setup Korean Locale
 LocaleConfig.locales['kr'] = {
@@ -21,23 +26,8 @@ LocaleConfig.locales['kr'] = {
 };
 LocaleConfig.defaultLocale = 'kr';
 
-// Category name mapping
-const categoryNames = {
-    fish_marine: "물고기 친구들 🐟",
-    animals: "동물 친구들 🦁",
-    dinosaurs: "공룡의 세계 🦖",
-    insects: "꿈틀꿈틀 곤충 🦋"
-};
-
-const RecordsScreen = ({ navigation, route }) => {
-    const userId = route.params?.userId || "pjw_explorer";
-
-    // Get user display name from userId
-    const getUserDisplayName = (id) => {
-        if (id === 'pjw_explorer') return '정우';
-        if (id === 'jjh_explorer') return 'JJH';
-        return '탐험가';
-    };
+const RecordsScreen = ({ navigation }) => {
+    const userId = DEFAULT_USER_ID;
 
     // Initialize with KST date
     const kstOffset = 9 * 60 * 60 * 1000;
@@ -178,7 +168,7 @@ const RecordsScreen = ({ navigation, route }) => {
                                     })}
                                 </Text>
                                 <Text style={styles.logCategory}>
-                                    {categoryNames[log.category] || log.category}
+                                    {getCategoryMeta(log.category).label}
                                 </Text>
                             </View>
                             <View style={styles.logBody}>
@@ -209,7 +199,7 @@ const RecordsScreen = ({ navigation, route }) => {
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Text style={styles.backButtonText}>🏠 홈으로</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>{getUserDisplayName(userId)}의 탐험 달력 🗓️</Text>
+                <Text style={styles.title}>{getUserDisplayName()}의 탐험 달력 🗓️</Text>
             </View>
 
             <View style={styles.calendarContainer}>
