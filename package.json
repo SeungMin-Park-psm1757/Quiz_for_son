@@ -1,6 +1,7 @@
 {
   "name": "jungwoosquizadventure",
   "version": "1.0.0",
+  "homepage": "https://seungmin-park-psm1757.github.io/Quiz_for_son",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
