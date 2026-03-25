@@ -1946,14 +1946,14 @@ const quizQuestions = [
   },
   {
     id: "birds004", category: "birds", difficulty: "medium",
-    question: "머리 위에 멋진 깃털 왕관을 쓰고 화려한 날개를 가진 숲속의 가수야! 고생해서 나무 구멍에 집을 짓고 살며 뻐꾹뻐꾹 예쁜 목소리로 아기들에게 봄이 왔음을 알려준단다. 부리가 길고 뾰족하며 독특한 모양을 가진 이 새는 누구일까요?",
+    question: "머리 위에 멋진 깃털 왕관을 쓰고 화려한 줄무늬 날개를 가진 특별한 새야! 긴 부리로 땅속 벌레를 잘 찾고 나무 구멍에 집을 짓고 살지. 멀리서도 눈에 띄는 독특한 모양을 가진 이 새는 누구일까요?",
     answer: "후투티",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Hoopoe_%28Upupa_epops%29_2.jpg/500px-Hoopoe_%28Upupa_epops%29_2.jpg",
   },
   {
     id: "birds005", category: "birds", difficulty: "easy",
-    question: "커다란 날개를 활짝 펴고 하늘 높이 날아다니는 용맹한 사냥꾼이야! 아주 먼 곳까지 볼 수 있는 밝은 눈과 단단한 갈고리 부리를 가졌단다. 하늘의 왕이라고 불리며 발톱으로 먹이를 쏙 낚아채는 이 멋진 새는 누구일까요?",
-    answer: "독수리",
+    question: "커다란 날개를 활짝 펴고 하늘 높이 날아다니는 용맹한 사냥꾼이야! 아주 먼 곳까지 볼 수 있는 밝은 눈과 단단한 갈고리 부리를 가졌단다. 높은 하늘에서 먹이를 발견하면 빠르게 내려와 발톱으로 낚아채는 이 멋진 새는 누구일까요?",
+    answer: "검독수리",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Golden_Eagle_in_flight_2.jpg/500px-Golden_Eagle_in_flight_2.jpg",
   },
   {
@@ -2024,7 +2024,7 @@ const quizQuestions = [
   },
   {
     id: "birds017", category: "birds", difficulty: "easy",
-    question: "매일 아침 '꼬꼬댁 꼬꼬' 하며 해가 떴음을 알려주는 부지런한 마당의 알람이야! 머리 위에 빨간 볏을 쓰고 위풍당당하게 걷는 모습이 정말 멋지단다. 날지는 못하지만 우리가 매일 먹는 맛있는 달걀을 낳아주는 이 고마운 친구는 누구일까요?",
+    question: "농장에서 사는 아주 친근한 새야! 머리 위에 빨간 볏이 있는 친구도 있고, 우리가 먹는 달걀을 낳는 가족으로도 잘 알려져 있단다. '꼬끼오' 하며 아침을 알리는 모습으로도 유명한 이 새는 누구일까요?",
     answer: "닭",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Cock-Side_View_2-08.jpg/500px-Cock-Side_View_2-08.jpg",
   },
@@ -2078,7 +2078,7 @@ const quizQuestions = [
   },
   {
     id: "birds026", category: "birds", difficulty: "hard",
-    question: "머리에 검은 띠가 있고 부리가 아주 길어서 갯벌 속의 먹이를 잘 찾아 먹는 용감한 새야! 매끄러운 회색 깃털을 가졌으며 우리나라 서해안 갯벌에서 자주 만날 수 있는 친구란다. 무리를 지어 생활하며 바다를 좋아하는 이 새는 누구일까요?",
+    question: "머리와 가슴 쪽이 검고 부리가 아주 길어서 갯벌 속의 먹이를 잘 찾아 먹는 용감한 새야! 밝은 주황빛 부리와 다리가 눈에 띄고 우리나라 서해안 갯벌에서도 만날 수 있는 친구란다. 바다 가까운 곳을 좋아하는 이 새는 누구일까요?",
     answer: "검은머리물떼새",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Haematopus_ostralegus_walking.jpg/500px-Haematopus_ostralegus_walking.jpg",
   },
@@ -2144,7 +2144,7 @@ const quizQuestions = [
   },
   {
     id: "birds045", category: "birds", difficulty: "hard",
-    question: "얼굴 주변에 하얀 안경을 쓴 것 같은 무늬가 있어 아주 귀엽고 영리해 보이는 숲속 친구야! 덤불 속을 바쁘게 돌아다니며 작은 벌레나 씨앗을 찾아 먹는 아주 부지런한 성격을 가졌단다. 우리나라 산에서 아주 흔하게 만날 수 있는 이 작은 새는 누구일까요?",
+    question: "눈썹 위에 하얀 줄이 있어 아주 귀엽고 또렷해 보이는 숲속 친구야! 나뭇가지 사이를 바쁘게 날아다니며 작은 벌레를 잡아먹는 아주 부지런한 성격을 가졌단다. 여름철 숲에서 만날 수 있는 이 작은 새는 누구일까요?",
     answer: "흰눈썹황금새",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Ficedula_zanthopygia_male.jpg/500px-Ficedula_zanthopygia_male.jpg",
   },
@@ -2258,7 +2258,7 @@ const quizQuestions = [
   },
   {
     id: "birds036", category: "birds", difficulty: "medium",
-    question: "사람들이 기르는 새 중에서 가장 화려한 꼬리를 가졌고 '구구구' 하며 사랑스럽게 울기도 해! 꼬리 날개를 부채처럼 펴서 멋을 부리는 종류도 있고, 아주 다양한 색깔과 모양을 가진 평화로운 친구란다. 우리와 친숙한 이 공원의 활기차고 예쁜 새는 누구일까요?",
+    question: "사람들이 기르는 새 중에서 아주 화려한 꼬리를 가진 종류가 많고 '구구구' 하며 사랑스럽게 울기도 해! 꼬리 날개를 부채처럼 펴서 멋을 부리는 종류도 있고, 다양한 색깔과 모양을 가진 평화로운 친구란다. 집이나 전시회에서 만날 수 있는 이 예쁜 새는 누구일까요?",
     answer: "관상비둘기",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Feral_pigeon_%28Columba_livia_domestica%29_in_London.jpg/500px-Feral_pigeon_%28Columba_livia_domestica%29_in_London.jpg",
   },

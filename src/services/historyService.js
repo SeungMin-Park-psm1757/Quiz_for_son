@@ -41,6 +41,11 @@ const getKSTDateString = () => {
 
 export const saveQuizHistory = async (userId, category, score, totalQuestions, status = 'completed') => {
     try {
+        if (status === 'cancelled' && totalQuestions < 5) {
+            console.log("Skipped short cancelled quiz history");
+            return;
+        }
+
         const today = getKSTDateString();
         const timestamp = new Date().toISOString();
 
