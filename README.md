@@ -3,10 +3,6 @@
 정우를 위해 만든 퀴즈 모험 웹앱입니다.
 물고기, 동물, 공룡, 곤충, 새 카테고리의 문제를 풀며 재미있게 학습할 수 있습니다.
 
-## 바로가기
-
-- 라이브 웹앱: [Quiz For Son](https://seungmin-park-psm1757.github.io/Quiz_for_son/)
-
 ## 주요 기능
 
 - 카테고리별 퀴즈 플레이
@@ -48,7 +44,6 @@ npm run build:web
 - 로그인 기능은 제거했습니다.
 - Firebase 연동은 제거했습니다.
 - 기록은 서버가 아니라 각 브라우저의 로컬 저장소에만 보관됩니다.
-- GitHub Pages 배포용 워크플로우는 `.github/workflows/deploy-pages.yml`에 있습니다.
 - `web-build/` 폴더는 웹 배포 산출물입니다.
 
 ## 개발자 정보
